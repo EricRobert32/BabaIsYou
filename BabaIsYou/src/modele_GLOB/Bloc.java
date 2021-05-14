@@ -1,4 +1,4 @@
-package modele;
+package modele_GLOB;
 
 public interface Bloc {
 

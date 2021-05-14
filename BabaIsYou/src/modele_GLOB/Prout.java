@@ -1,4 +1,4 @@
-package modele;
+package modele_GLOB;
 
 public enum Prout {
 	
@@ -9,7 +9,6 @@ public enum Prout {
 		switch (p) {
 		case is: {
 			return false;
-			;
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + p);
