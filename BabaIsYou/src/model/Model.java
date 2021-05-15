@@ -1,4 +1,4 @@
-package modele;
+package model;
 
 import java.util.HashMap;
 
@@ -6,11 +6,11 @@ import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
 
-public class Modele {
+public class Model {
 	private Cell[][] grid;
 	private HashMap<EnumWord, EnumWord> rule;
 
-	public Modele(int line, int column) {
+	public Model(int line, int column) {
 		this.grid = new Cell[line][column];
 		this.rule = new HashMap<>();
 	}

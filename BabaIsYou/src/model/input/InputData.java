@@ -1,4 +1,4 @@
-package modele.input;
+package model.input;
 
 public static class InputData {
 	

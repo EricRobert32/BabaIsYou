@@ -1,4 +1,4 @@
-package controleur;
+package controller;
 
 import java.awt.Color;
 
@@ -7,20 +7,18 @@ import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
 import fr.umlv.zen5.ScreenInfo;
 import fr.umlv.zen5.Event.Action;
+import model.Block;
+import model.ElementBlock;
+import model.Model;
+import model.WordBlock;
 import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
-import modele.Block;
-import modele.ElementBlock;
-import modele.Modele;
-import modele.WordBlock;
+import view.View;
 
-public class Controleur {
-	
-
+public class Controller {
 	public static void main(String[] args) {
-		Modele modele = new Modele(10, 10);
-		
+		Model modele = new Model(10, 10);
 		
 		Application.run(Color.BLACK, context -> {
 			int size_grid = 10;
@@ -30,7 +28,7 @@ public class Controleur {
 
 			ElementBlock joueur = new ElementBlock(size_grid, EnumWord.YOU, 0, 0);
 
-			if (verifySentence(baba, is, you)) {
+			if (modele.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
@@ -38,7 +36,7 @@ public class Controleur {
 
 			baba.move(context, size_grid, EnumDirection.EAST);
 
-			if (verifySentence(baba, is, you)) {
+			if (modele.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
@@ -46,7 +44,7 @@ public class Controleur {
 
 			is.move(context, size_grid, EnumDirection.EAST);
 
-			if (verifySentence(baba, is, you)) {
+			if (modele.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
@@ -54,7 +52,7 @@ public class Controleur {
 
 			you.move(context, size_grid, EnumDirection.EAST);
 
-			if (verifySentence(baba, is, you)) {
+			if (modele.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
@@ -68,7 +66,7 @@ public class Controleur {
 			
 			Block[] blocks = {joueur, baba, is, you};
 			
-			draw(context, size_grid, blocks);
+			View.draw(context, size_grid, blocks);
 
 			/* Area area = new Area(); */
 			for (;;) {
@@ -95,7 +93,7 @@ public class Controleur {
 					joueur.move(context, size_grid, EnumDirection.WEST);
 				}
 				
-				draw(context, size_grid, blocks);
+				View.draw(context, size_grid, blocks);
 				System.out.println(event);
 			}
 		});

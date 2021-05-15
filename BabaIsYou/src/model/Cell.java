@@ -1,8 +1,6 @@
-package modele;
+package model;
 
 import java.util.ArrayList;
-
-import model.elementList.EnumWord;
 
 public class Cell {
 	private final ArrayList<Block> element;

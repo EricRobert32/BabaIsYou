@@ -4,12 +4,11 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 import fr.umlv.zen5.ApplicationContext;
-import modele.Block;
-import modele.ElementBlock;
+import model.Block;
+import model.ElementBlock;
 
 public class View {
-
-	static void draw(ApplicationContext context, int size_grid, Block... blocks) {
+	public static void draw(ApplicationContext context, int size_grid, Block... blocks) {
 		float width = context.getScreenInfo().getWidth();
 		float height = context.getScreenInfo().getHeight();
 		

@@ -1,4 +1,4 @@
-package modele;
+package model;
 
 import fr.umlv.zen5.ApplicationContext;
 import model.elementList.EnumDirection;

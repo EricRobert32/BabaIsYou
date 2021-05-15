@@ -1,4 +1,4 @@
-package modele;
+package model;
 
 import model.elementList.EnumCategory;
 import model.elementList.EnumWord;
