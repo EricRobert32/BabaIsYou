@@ -1,4 +1,4 @@
-package modele;
+package model.elementList;
 
 /**
  * Enum for the 4 directions

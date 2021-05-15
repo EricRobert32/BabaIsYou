@@ -1,5 +1,8 @@
 package modele;
 
+import model.elementList.EnumCategory;
+import model.elementList.EnumWord;
+
 /**
  * Class that represent a word block
  * @author Éric Robert

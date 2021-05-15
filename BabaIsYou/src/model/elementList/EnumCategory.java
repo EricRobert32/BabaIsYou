@@ -1,4 +1,4 @@
-package modele;
+package model.elementList;
 
 /**
  * Enum for the category of the words

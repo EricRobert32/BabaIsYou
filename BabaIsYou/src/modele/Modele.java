@@ -1,100 +1,58 @@
 package modele;
 
-import java.awt.Color;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
+import java.util.HashMap;
 
-import fr.umlv.zen5.Application;
-import fr.umlv.zen5.ApplicationContext;
-import fr.umlv.zen5.Event;
-import fr.umlv.zen5.ScreenInfo;
-import fr.umlv.zen5.Event.Action;
-import fr.umlv.zen5.KeyboardKey;
+import model.elementList.EnumCategory;
+import model.elementList.EnumDirection;
+import model.elementList.EnumWord;
 
 public class Modele {
-	public static void main(String[] args) {
-		Application.run(Color.BLACK, context -> {
-			int size_grid = 10;
-			WordBlock baba = new WordBlock(size_grid, EnumWord.BABA, 0, 1, EnumCategory.NOUN);
-			WordBlock is = new WordBlock(size_grid, EnumWord.IS, 0, 2, EnumCategory.OPERATOR);
-			WordBlock you = new WordBlock(size_grid, EnumWord.YOU, 0, 3, EnumCategory.ATTRIBUTE);
+	private Cell[][] grid;
+	private HashMap<EnumWord, EnumWord> rule;
 
-			ElementBlock joueur = new ElementBlock(size_grid, EnumWord.YOU, 0, 0);
-
-			if (verifySentence(baba, is, you)) {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
-			} else {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
-			}
-
-			baba.move(context, size_grid, EnumDirection.EAST);
-
-			if (verifySentence(baba, is, you)) {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
-			} else {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
-			}
-
-			is.move(context, size_grid, EnumDirection.EAST);
-
-			if (verifySentence(baba, is, you)) {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
-			} else {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
-			}
-
-			you.move(context, size_grid, EnumDirection.EAST);
-
-			if (verifySentence(baba, is, you)) {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
-			} else {
-				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
-			}
-
-			// get the size of the screen
-			ScreenInfo screenInfo = context.getScreenInfo();
-			float width = screenInfo.getWidth();
-			float height = screenInfo.getHeight();
-			System.out.println("size of the screen (" + width + " x " + height + ")");
-			
-			Block[] blocks = {joueur, baba, is, you};
-			
-			draw(context, size_grid, blocks);
-
-			/* Area area = new Area(); */
-			for (;;) {
-				Event event = context.pollOrWaitEvent(10);
-				if (event == null) { // no event
-					continue;
-				}
-				Action action = event.getAction();
-				if (event.getKey() == KeyboardKey.Q) {
-					System.out.println("abort abort !");
-					context.exit(0);
-					return;
-				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
-					System.out.println("Going up !");
-					joueur.move(context, size_grid, EnumDirection.NORTH);
-				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
-					System.out.println("Going down !");
-					joueur.move(context, size_grid, EnumDirection.SOUTH);
-				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
-					System.out.println("Going right !");
-					joueur.move(context, size_grid, EnumDirection.EAST);
-				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
-					System.out.println("Going left !");
-					joueur.move(context, size_grid, EnumDirection.WEST);
-				}
-				
-				draw(context, size_grid, blocks);
-				System.out.println(event);
-			}
-		});
+	public Modele(int line, int column) {
+		this.grid = new Cell[line][column];
+		this.rule = new HashMap<>();
 	}
 
-	public static boolean verifySentence(WordBlock w1, WordBlock w2, WordBlock w3) {
+	public int getNbLine() {
+		return grid.length;
+	}
+
+	public int getNbColumn() {
+		return grid[0].length;
+	}
+	
+	public EnumWord getRule(EnumWord element) {
+		return rule.get(element);
+	}
+	
+	private void addRule(EnumWord word1, EnumWord word2) {
+		rule.put(word1, word2);
+	}
+	private void removeRule(EnumWord element) {
+		rule.remove(element);
+	}
+
+	public void addBlocks(int line, int column, Block... bloc) {
+		for (int i = 0; i < bloc.length; i++) {
+			grid[line][column].addBlock(bloc[i]);
+		}
+	}
+	
+	public void removeBlock(int line, int column,Block bloc) {
+		grid[line][column].removeBlock(bloc);
+	}
+	
+	public void moveBlock(int line,int column,EnumDirection dir) {
+		
+	}
+	
+	public void displayGrid() {
+		
+	}
+
+	public boolean verifySentence(WordBlock w1, WordBlock w2, WordBlock w3) {
 		if (w1.getCategory() == EnumCategory.NOUN && w2.getCategory() == EnumCategory.OPERATOR
 				&& (w3.getCategory() == EnumCategory.NOUN || w3.getCategory() == EnumCategory.ATTRIBUTE)) {
 			System.out.println("The 3 words are in the order '" + w1.getCategory() + " - " + w2.getCategory() + " - "
@@ -124,32 +82,4 @@ public class Modele {
 		return false;
 	}
 
-	static void draw(ApplicationContext context, int size_grid, Block... blocks) {
-		float width = context.getScreenInfo().getWidth();
-		float height = context.getScreenInfo().getHeight();
-		
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.BLACK);
-			graphics.fill(new Rectangle2D.Float(0, 0, width, height));
-		});
-		
-		for (Block block : blocks) {
-			float minX = block.getX() * (width / size_grid);
-			float maxX = width / 10;
-			float minY = block.getY() * (height / size_grid);
-			float maxY = height / 10;
-			
-			context.renderFrame(graphics -> {
-				if (block.getClass() == ElementBlock.class) {
-					graphics.setColor(Color.WHITE);
-				}
-				else {
-					graphics.setColor(Color.RED);
-				}
-				graphics.fill(new Rectangle2D.Float(minX, minY, maxX, maxY));
-			});
-		}
-		
-		
-	}
 }

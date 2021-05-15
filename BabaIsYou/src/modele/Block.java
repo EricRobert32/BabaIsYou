@@ -1,6 +1,8 @@
 package modele;
 
 import fr.umlv.zen5.ApplicationContext;
+import model.elementList.EnumDirection;
+import model.elementList.EnumWord;
 
 /**
  * Interface that give methods for the blocks

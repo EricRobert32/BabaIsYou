@@ -1,4 +1,4 @@
-package modele;
+package model.elementList;
 
 /**
  * Enum for the words
@@ -6,7 +6,7 @@ package modele;
  * @author Romain Barbé
  * @version 1
  */
-public enum EnumWord {
+public enum EnumWord  {
 	BABA, FLAG, WALL, WATER, SKULL, LAVA, ROCK,
 
 	IS,

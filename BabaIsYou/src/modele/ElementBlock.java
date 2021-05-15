@@ -1,5 +1,7 @@
 package modele;
 
+import model.elementList.EnumWord;
+
 /**
  * Class that represent a element block
  * @author Éric Robert
