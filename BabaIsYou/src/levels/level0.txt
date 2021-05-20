@@ -1,0 +1,9 @@
+W-BABA  W-IS    W-YOU   -       -       -       -       -       W-FLAG  W-IS    W-WIN
+-       -       -       -       -       -       -       -       -       -       -
+E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL
+_       _       _       _       _       E-ROCK  _       _       _       _       _
+_       E-BABA  _       _       _       E-ROCK  _       _       _       E-FLAG  _
+_       _       _       _       _       E-ROCK  _       _       _       _       _
+E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL
+-       -       -       -       -       -       -       -       -       -       -
+W-WALL  W-IS    W-STOP  -       -       -       -       -       W-ROCK  W-IS    W-PUSH

@@ -14,5 +14,5 @@ public sealed interface Block permits AbstractBlock{
 	int getX();
 	int getY();
 	EnumWord getName();
-	boolean move(ApplicationContext context, int size_grid, EnumDirection direction);
+	boolean move(ApplicationContext context, Model model, int sizeGridX, int sizeGridY, EnumDirection direction);
 }

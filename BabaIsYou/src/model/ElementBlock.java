@@ -15,11 +15,20 @@ public final class ElementBlock extends AbstractBlock {
 	 * @param x
 	 * @param y
 	 */
-	public ElementBlock(int size_grid, EnumWord name, int x, int y) {
-		super(size_grid, name, x, y);
+	public ElementBlock(int sizeGridX, int sizeGridY, EnumWord name, int x, int y) {
+		super(sizeGridX, sizeGridY, name, x, y);
 	}
 	
 	/*public void destroy() {
 		
 	}*/
+	
+	/**
+	 * Return a string representation of the element block
+	 * @return a String with the name, x and y of the element block
+	 */
+	@Override
+	public String toString() {
+		return super.getName() + " (" + super.getX() + ", " + super.getY() + ") ";
+	}
 }

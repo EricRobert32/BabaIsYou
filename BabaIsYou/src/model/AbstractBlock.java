@@ -21,11 +21,11 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	 * @param x
 	 * @param y
 	 */
-	public AbstractBlock(int size_grid, EnumWord name, int x, int y) {
-		if (x < 0 || x >= size_grid) {
+	public AbstractBlock(int sizeGridX, int sizeGridY, EnumWord name, int x, int y) {
+		if (x < 0 || x >= sizeGridX) {
 			throw new IllegalArgumentException("Not a valid X coordinate");
 		}
-		if (y < 0 || y >= size_grid) {
+		if (y < 0 || y >= sizeGridY) {
 			throw new IllegalArgumentException("Not a valid Y coordinate");
 		}
 		
@@ -63,24 +63,32 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	 * @param direction		direction in which the piece is pushed
 	 * @return true is the block has been pushed or then false
 	 */
-	public boolean move(ApplicationContext context, int size_grid, EnumDirection direction) {
+	public boolean move(ApplicationContext context, Model model, int sizeGridX, int sizeGridY, EnumDirection direction) {
 		float width = context.getScreenInfo().getWidth();
 		float height = context.getScreenInfo().getHeight();
 		
-		if (direction == EnumDirection.NORTH && (this.y - 1) * (height / size_grid) >= 0) {
+		if (direction == EnumDirection.NORTH && (this.y - 1) * (height / sizeGridY) >= 0) {
+			/*model.removeBlock(this.x, this.y, this);*/
 			this.y = this.y - 1;
+			/*model.addBlocks(this.x, this.y, this);*/
 			return true;
 		}
-		else if (direction == EnumDirection.SOUTH && (this.y + 1) * (height / size_grid) < height) {
+		else if (direction == EnumDirection.SOUTH && (this.y + 1) * (height / sizeGridY) < height) {
+			/*model.removeBlock(this.x, this.y, this);*/
 			this.y = this.y + 1;
+			/*model.addBlocks(this.x, this.y, this);*/
 			return true;
 		}
-		else if (direction == EnumDirection.EAST && (this.x + 1) * (width / size_grid) < width) {
+		else if (direction == EnumDirection.EAST && (this.x + 1) * (width / sizeGridX) < width) {
+			/*model.removeBlock(this.x, this.y, this);*/
 			this.x = this.x + 1;
+			/*model.addBlocks(this.x, this.y, this);*/
 			return true;
 		}
-		else if (direction == EnumDirection.WEST && (this.x - 1) * (width / size_grid) >= 0) {
+		else if (direction == EnumDirection.WEST && (this.x - 1) * (width / sizeGridX) >= 0) {
+			/*model.removeBlock(this.x, this.y, this);*/
 			this.x = this.x - 1;
+			/*model.addBlocks(this.x, this.y, this);*/
 			return true;
 		}
 		return false;

@@ -9,17 +9,19 @@ public class Cell {
 		this.element = new ArrayList<>();
 	}
 	
-	public void addBlock(Block bloc) {
-		element.add(bloc);
+	public void addBlock(Block block) {
+		element.add(block);
 	}
 	
-	public void removeBlock(Block bloc) {
-		element.remove(bloc);
+	public void removeBlock(Block block) {
+		element.remove(block);
 	}
 	
-	public boolean containBlock(Block bloc) {
-		return element.contains(bloc);
+	public boolean containBlock(Block block) {
+		return element.contains(block);
 	}
 	
-
+	public Block getBlock(int index) {
+		return element.get(index);
+	}
 }

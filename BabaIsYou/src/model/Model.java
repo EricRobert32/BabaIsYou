@@ -5,13 +5,14 @@ import java.util.HashMap;
 import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
+import model.input.InputData;
 
 public class Model {
 	private Cell[][] grid;
 	private HashMap<EnumWord, EnumWord> rule;
 
-	public Model(int line, int column) {
-		this.grid = new Cell[line][column];
+	public Model(String file) {
+		this.grid = InputData.readToGrid("level0.txt");
 		this.rule = new HashMap<>();
 	}
 
@@ -40,16 +41,25 @@ public class Model {
 		}
 	}
 	
-	public void removeBlock(int line, int column,Block bloc) {
+	public void removeBlock(int line, int column, Block bloc) {
 		grid[line][column].removeBlock(bloc);
 	}
 	
-	public void moveBlock(int line,int column,EnumDirection dir) {
+	public void moveBlock(int line, int column, EnumDirection dir) {
 		
 	}
 	
 	public void displayGrid() {
-		
+		for (int j = 0; j < grid[0].length; j++) {
+			for (int i = 0; i < grid.length; i++) {
+				System.out.print(grid[i][j].getBlock(0));
+			}
+			System.out.println("");
+		}
+	}
+	
+	public Cell[][] getGrid() {
+		return grid;
 	}
 
 	public boolean verifySentence(WordBlock w1, WordBlock w2, WordBlock w3) {

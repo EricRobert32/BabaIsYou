@@ -19,8 +19,8 @@ public final class WordBlock extends AbstractBlock {
 	 * @param y
 	 * @param category
 	 */
-	public WordBlock(int size_grid, EnumWord name, int x, int y, EnumCategory category) {
-		super(size_grid, name, x, y);
+	public WordBlock(int sizeGridX, int sizeGridY, EnumWord name, int x, int y, EnumCategory category) {
+		super(sizeGridX, sizeGridY, name, x, y);
 		this.category = category;
 	}
 	
@@ -33,11 +33,11 @@ public final class WordBlock extends AbstractBlock {
 	}
 	
 	/**
-	 * 
+	 * Return a string representation of the word block
 	 * @return a String with the name, x and y of the word block
 	 */
 	@Override
 	public String toString() {
-		return super.getName() + " (" + super.getX() + ", " + super.getY() + ")";
+		return super.getName() + " (" + super.getX() + ", " + super.getY() + ") ";
 	}
 }

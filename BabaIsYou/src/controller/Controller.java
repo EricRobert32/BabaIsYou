@@ -8,6 +8,7 @@ import fr.umlv.zen5.KeyboardKey;
 import fr.umlv.zen5.ScreenInfo;
 import fr.umlv.zen5.Event.Action;
 import model.Block;
+import model.Cell;
 import model.ElementBlock;
 import model.Model;
 import model.WordBlock;
@@ -18,41 +19,43 @@ import view.View;
 
 public class Controller {
 	public static void main(String[] args) {
-		Model modele = new Model(10, 10);
-		
+		Model model = new Model("level0.txt");
+		model.displayGrid();
+
 		Application.run(Color.BLACK, context -> {
-			int size_grid = 10;
-			WordBlock baba = new WordBlock(size_grid, EnumWord.BABA, 0, 1, EnumCategory.NOUN);
-			WordBlock is = new WordBlock(size_grid, EnumWord.IS, 0, 2, EnumCategory.OPERATOR);
-			WordBlock you = new WordBlock(size_grid, EnumWord.YOU, 0, 3, EnumCategory.ATTRIBUTE);
+			int sizeGridX = 11;
+			int sizeGridY = 9;
+			WordBlock baba = new WordBlock(sizeGridX, sizeGridY, EnumWord.BABA, 0, 1, EnumCategory.NOUN);
+			WordBlock is = new WordBlock(sizeGridX, sizeGridY, EnumWord.IS, 0, 2, EnumCategory.OPERATOR);
+			WordBlock you = new WordBlock(sizeGridX, sizeGridY, EnumWord.YOU, 0, 3, EnumCategory.ATTRIBUTE);
 
-			ElementBlock joueur = new ElementBlock(size_grid, EnumWord.YOU, 0, 0);
+			ElementBlock joueur = new ElementBlock(sizeGridX, sizeGridY, EnumWord.YOU, 0, 0);
 
-			if (modele.verifySentence(baba, is, you)) {
+			if (model.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
 			}
 
-			baba.move(context, size_grid, EnumDirection.EAST);
+			baba.move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
 
-			if (modele.verifySentence(baba, is, you)) {
+			if (model.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
 			}
 
-			is.move(context, size_grid, EnumDirection.EAST);
+			is.move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
 
-			if (modele.verifySentence(baba, is, you)) {
+			if (model.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
 			}
 
-			you.move(context, size_grid, EnumDirection.EAST);
+			you.move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
 
-			if (modele.verifySentence(baba, is, you)) {
+			if (model.verifySentence(baba, is, you)) {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is a valid sentence");
 			} else {
 				System.out.println("The sentence '" + baba + " " + is + " " + you + "' is NOT a valid sentence");
@@ -63,10 +66,13 @@ public class Controller {
 			float width = screenInfo.getWidth();
 			float height = screenInfo.getHeight();
 			System.out.println("size of the screen (" + width + " x " + height + ")");
-			
-			Block[] blocks = {joueur, baba, is, you};
-			
-			View.draw(context, size_grid, blocks);
+
+			/*
+			 * Block[] blocks = {joueur, baba, is, you}; View.draw(context, sizeGridX,
+			 * sizeGridY, blocks);
+			 */
+
+			View.draw(context, sizeGridX, sizeGridY, model.getGrid());
 
 			/* Area area = new Area(); */
 			for (;;) {
@@ -79,21 +85,83 @@ public class Controller {
 					System.out.println("abort abort !");
 					context.exit(0);
 					return;
-				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
+				}/* else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
 					System.out.println("Going up !");
-					joueur.move(context, size_grid, EnumDirection.NORTH);
+					Cell[][] grid = model.getGrid();
+					for (int j = 0; j < grid[0].length; j++) {
+						for (int i = 0; i < grid.length; i++) {
+							Block block = grid[i][j].getBlock(0);
+							if (block != null) {
+								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
+									System.out.println("MOVING !");
+									grid[i][j].getBlock(0).move(context, model, sizeGridX, sizeGridY,
+											EnumDirection.NORTH);
+								}
+							}
+						}
+					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
 					System.out.println("Going down !");
-					joueur.move(context, size_grid, EnumDirection.SOUTH);
+					Cell[][] grid = model.getGrid();
+					for (int j = 0; j < grid[0].length; j++) {
+						for (int i = 0; i < grid.length; i++) {
+							Block block = grid[i][j].getBlock(0);
+							if (block != null) {
+								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
+									System.out.println("MOVING !");
+									grid[i][j].getBlock(0).move(context, model, sizeGridX, sizeGridY,
+											EnumDirection.SOUTH);
+								}
+							}
+						}
+					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
 					System.out.println("Going right !");
-					joueur.move(context, size_grid, EnumDirection.EAST);
+					Cell[][] grid = model.getGrid();
+					for (int j = 0; j < grid[0].length; j++) {
+						for (int i = 0; i < grid.length; i++) {
+							Block block = grid[i][j].getBlock(0);
+							if (block != null) {
+								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
+									System.out.println("MOVING !");
+									grid[i][j].getBlock(0).move(context, model, sizeGridX, sizeGridY,
+											EnumDirection.EAST);
+								}
+							}
+						}
+					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
 					System.out.println("Going left !");
-					joueur.move(context, size_grid, EnumDirection.WEST);
-				}
+					Cell[][] grid = model.getGrid();
+					for (int j = 0; j < grid[0].length; j++) {
+						for (int i = 0; i < grid.length; i++) {
+							Block block = grid[i][j].getBlock(0);
+							if (block != null) {
+								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
+									System.out.println("MOVING !");
+									grid[i][j].getBlock(0).move(context, model, sizeGridX, sizeGridY,
+											EnumDirection.WEST);
+								}
+							}
+						}
+					}
+				}*/
 				
-				View.draw(context, size_grid, blocks);
+				else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
+					System.out.println("Going up !");
+					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.NORTH);
+				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
+					System.out.println("Going down !");
+					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.SOUTH);
+				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
+					System.out.println("Going right !");
+					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
+				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
+					System.out.println("Going left !");
+					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.WEST);
+				}
+
+				View.draw(context, sizeGridX, sizeGridY, model.getGrid());
 				System.out.println(event);
 			}
 		});
