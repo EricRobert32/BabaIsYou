@@ -30,8 +30,8 @@ public class View {
 		 */
 
 		context.renderFrame(graphics -> {
-			for (int j = 0; j < grid[0].length; j++) {
-				for (int i = 0; i < grid.length; i++) {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
 					float minX = i * (width / sizeGridX);
 					float maxX = width / sizeGridX;
 					float minY = j * (height / sizeGridY);

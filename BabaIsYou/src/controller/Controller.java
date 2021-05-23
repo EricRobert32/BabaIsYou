@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.Event;
@@ -11,6 +13,7 @@ import model.Block;
 import model.Cell;
 import model.ElementBlock;
 import model.Model;
+import model.Rule;
 import model.WordBlock;
 import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
@@ -20,11 +23,22 @@ import view.View;
 public class Controller {
 	public static void main(String[] args) {
 		Model model = new Model("level0.txt");
+		Cell[][] grid = model.getGrid();
 		model.displayGrid();
+		
+		/******** Test des rules ********/
+		System.out.println("********** TEST DES RULES **********");
+		HashSet<Rule> rules = model.getRules();
+		for (Rule rule : rules) {
+			System.out.println(rule.getRuleFirstWord() + " IS " + rule.getRuleSecondWord());
+		}
+		System.out.println("******** FIN TEST DES RULES ********");
+		/****** Fin test des rules ******/
 
 		Application.run(Color.BLACK, context -> {
-			int sizeGridX = 11;
-			int sizeGridY = 9;
+			int sizeGridX = model.getNbColumn();
+			int sizeGridY = model.getNbLine();
+			System.out.println("sizeX (nb colonnes) = " + sizeGridX + " | sizeY (nb lignes) = " + sizeGridY);
 			WordBlock baba = new WordBlock(sizeGridX, sizeGridY, EnumWord.BABA, 0, 1, EnumCategory.NOUN);
 			WordBlock is = new WordBlock(sizeGridX, sizeGridY, EnumWord.IS, 0, 2, EnumCategory.OPERATOR);
 			WordBlock you = new WordBlock(sizeGridX, sizeGridY, EnumWord.YOU, 0, 3, EnumCategory.ATTRIBUTE);
@@ -85,9 +99,8 @@ public class Controller {
 					System.out.println("abort abort !");
 					context.exit(0);
 					return;
-				}/* else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
+				} /*else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
 					System.out.println("Going up !");
-					Cell[][] grid = model.getGrid();
 					for (int j = 0; j < grid[0].length; j++) {
 						for (int i = 0; i < grid.length; i++) {
 							Block block = grid[i][j].getBlock(0);
@@ -102,7 +115,6 @@ public class Controller {
 					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
 					System.out.println("Going down !");
-					Cell[][] grid = model.getGrid();
 					for (int j = 0; j < grid[0].length; j++) {
 						for (int i = 0; i < grid.length; i++) {
 							Block block = grid[i][j].getBlock(0);
@@ -117,7 +129,6 @@ public class Controller {
 					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
 					System.out.println("Going right !");
-					Cell[][] grid = model.getGrid();
 					for (int j = 0; j < grid[0].length; j++) {
 						for (int i = 0; i < grid.length; i++) {
 							Block block = grid[i][j].getBlock(0);
@@ -132,7 +143,6 @@ public class Controller {
 					}
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
 					System.out.println("Going left !");
-					Cell[][] grid = model.getGrid();
 					for (int j = 0; j < grid[0].length; j++) {
 						for (int i = 0; i < grid.length; i++) {
 							Block block = grid[i][j].getBlock(0);
@@ -146,19 +156,19 @@ public class Controller {
 						}
 					}
 				}*/
-				
+
 				else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
 					System.out.println("Going up !");
-					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.NORTH);
+					grid[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.NORTH);
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
 					System.out.println("Going down !");
-					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.SOUTH);
+					grid[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.SOUTH);
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
 					System.out.println("Going right !");
-					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
+					grid[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
 					System.out.println("Going left !");
-					model.getGrid()[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.WEST);
+					grid[1][4].getBlock(0).move(context, model, sizeGridX, sizeGridY, EnumDirection.WEST);
 				}
 
 				View.draw(context, sizeGridX, sizeGridY, model.getGrid());

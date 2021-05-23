@@ -2,17 +2,19 @@ package model.input;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import model.Block;
 import model.Cell;
 import model.WordBlock;
 import model.ElementBlock;
+import model.Rule;
 import model.elementList.EnumCategory;
 import model.elementList.EnumWord;
 
 public class InputData {
-	public static Cell[][] readToGrid(String file) {
+	public static Cell[][] readFile(String file) {
 		int width = 0;
 		int height = 0;
 
