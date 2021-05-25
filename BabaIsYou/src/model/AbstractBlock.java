@@ -67,28 +67,28 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 		float width = context.getScreenInfo().getWidth();
 		float height = context.getScreenInfo().getHeight();
 		
-		if (direction == EnumDirection.NORTH && (this.y - 1) * (height / sizeGridY) >= 0) {
-			/*model.removeBlock(this.x, this.y, this);*/
-			this.y = this.y - 1;
-			/*model.addBlocks(this.x, this.y, this);*/
-			return true;
-		}
-		else if (direction == EnumDirection.SOUTH && (this.y + 1) * (height / sizeGridY) < height) {
-			/*model.removeBlock(this.x, this.y, this);*/
-			this.y = this.y + 1;
-			/*model.addBlocks(this.x, this.y, this);*/
-			return true;
-		}
-		else if (direction == EnumDirection.EAST && (this.x + 1) * (width / sizeGridX) < width) {
-			/*model.removeBlock(this.x, this.y, this);*/
-			this.x = this.x + 1;
-			/*model.addBlocks(this.x, this.y, this);*/
-			return true;
-		}
-		else if (direction == EnumDirection.WEST && (this.x - 1) * (width / sizeGridX) >= 0) {
-			/*model.removeBlock(this.x, this.y, this);*/
+		if (direction == EnumDirection.NORTH && (this.x - 1) * (height / sizeGridX) >= 0) {
+			model.removeBlock(this.x, this.y, this);
 			this.x = this.x - 1;
-			/*model.addBlocks(this.x, this.y, this);*/
+			model.addBlocks(this.x, this.y, this);
+			return true;
+		}
+		if (direction == EnumDirection.SOUTH && (this.x + 1) * (height / sizeGridX) < height) {
+			model.removeBlock(this.x, this.y, this);
+			this.x = this.x + 1;
+			model.addBlocks(this.x, this.y, this);
+			return true;
+		}
+		if (direction == EnumDirection.EAST && (this.y + 1) * (width / sizeGridY) < width) {
+			model.removeBlock(this.x, this.y, this);
+			this.y = this.y + 1;
+			model.addBlocks(this.x, this.y, this);
+			return true;
+		}
+		if (direction == EnumDirection.WEST && (this.y - 1) * (width / sizeGridY) >= 0) {
+			model.removeBlock(this.x, this.y, this);
+			this.y = this.y - 1;
+			model.addBlocks(this.x, this.y, this);
 			return true;
 		}
 		return false;

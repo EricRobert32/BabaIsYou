@@ -32,10 +32,10 @@ public class View {
 		context.renderFrame(graphics -> {
 			for (int i = 0; i < grid.length; i++) {
 				for (int j = 0; j < grid[0].length; j++) {
-					float minX = i * (width / sizeGridX);
-					float maxX = width / sizeGridX;
-					float minY = j * (height / sizeGridY);
-					float maxY = height / sizeGridY;
+					float minY = j * (width / sizeGridY);
+					float maxY = width / sizeGridY;
+					float minX = i * (height / sizeGridX);
+					float maxX = height / sizeGridX;
 
 					Block block = grid[i][j].getBlock(0);
 
@@ -45,7 +45,7 @@ public class View {
 						} else if (block.getClass() == WordBlock.class) {
 							graphics.setColor(Color.RED);
 						}
-						graphics.fill(new Rectangle2D.Float(minX, minY, maxX, maxY));
+						graphics.fill(new Rectangle2D.Float(minY, minX, maxY, maxX));
 					}
 				}
 			}

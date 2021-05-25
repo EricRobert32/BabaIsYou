@@ -15,6 +15,7 @@ import model.elementList.EnumWord;
 
 public class InputData {
 	public static Cell[][] readFile(String file) {
+		System.out.println("\n******* INPUT DATA *******\n");
 		int width = 0;
 		int height = 0;
 
@@ -36,9 +37,10 @@ public class InputData {
 		width = width / height;
 		sc.close();
 
-		System.out.println("Width = " + width + " ; height = " + height);
+		System.out.println("Height = " + height + " ; width = " + width);
 
-		Cell[][] grid = new Cell[width][height];
+		Cell[][] grid = new Cell[height][width];
+		
 		sc = null;
 		try {
 			sc = new Scanner(new File("./src/levels/" + file));
@@ -48,17 +50,19 @@ public class InputData {
 		int i = 0, j = 0;
 		while (sc.hasNextLine()) {
 			Scanner sc2 = new Scanner(sc.nextLine());
-			i = 0;
+			j = 0;
 			while (sc2.hasNext()) {
 				String s = sc2.next();
 				grid[i][j] = new Cell();
-				grid[i][j].addBlock(stringToBlock(width, height, i, j, s));
-				i++;
+				/*System.out.println("Calling with height = " + height + " ; width = " + width + " ; i = " + i + " ; j = " + j);*/
+				grid[i][j].addBlock(stringToBlock(height, width, i, j, s));
+				j++;
 			}
 			sc2.close();
-			j++;
+			i++;
 		}
 		sc.close();
+		System.out.println("\n***** FIN INPUT DATA *****\n");
 		return grid;
 	}
 
