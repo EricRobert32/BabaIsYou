@@ -65,6 +65,7 @@ public class Model {
 		return grid;
 	}
 
+	/* MÉTHODE PLUS UTILISÉE */
 	public boolean verifySentence(WordBlock w1, WordBlock w2, WordBlock w3) {
 		if (w1.getCategory() == EnumCategory.NOUN && w2.getCategory() == EnumCategory.OPERATOR
 				&& (w3.getCategory() == EnumCategory.NOUN || w3.getCategory() == EnumCategory.ATTRIBUTE)) {
@@ -129,7 +130,8 @@ public class Model {
 					if (blockX1 != null && blockX2 != null) {
 						if (block.getClass() == WordBlock.class && blockX1.getClass() == WordBlock.class
 								&& blockX2.getClass() == WordBlock.class) {
-							if (this.verifySentence((WordBlock) block, (WordBlock) blockX1, (WordBlock) blockX2)) {
+							if (((WordBlock) block).getCategory() == EnumCategory.NOUN && ((WordBlock) blockX1).getCategory() == EnumCategory.OPERATOR
+									&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN || ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
 								System.out.println("Les mots " + block + blockX1 + blockX2 + "forment une phrase");
 								rules.add(new Rule(block.getName(), blockX2.getName()));
 							}
@@ -140,7 +142,8 @@ public class Model {
 					if (blockY1 != null && blockY2 != null) {
 						if (block.getClass() == WordBlock.class && blockY1.getClass() == WordBlock.class
 								&& blockY2.getClass() == WordBlock.class) {
-							if (this.verifySentence((WordBlock) block, (WordBlock) blockY1, (WordBlock) blockY2)) {
+							if (((WordBlock) block).getCategory() == EnumCategory.NOUN && ((WordBlock) blockY1).getCategory() == EnumCategory.OPERATOR
+									&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN || ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
 								System.out.println("Les mots " + block + blockY1 + blockY2 + "forment une phrase");
 								rules.add(new Rule(block.getName(), blockY2.getName()));
 							}
