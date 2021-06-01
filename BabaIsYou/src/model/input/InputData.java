@@ -83,7 +83,7 @@ public class InputData {
 		case "W-PUSH" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.PUSH, x, y, EnumCategory.ATTRIBUTE);
 		case "W-MELT" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.MELT, x, y, EnumCategory.ATTRIBUTE);
 		case "W-HOT" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.HOT, x, y, EnumCategory.ATTRIBUTE);
-		case "W-DEFEAT" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.DEFEAT, x, y, EnumCategory.ATTRIBUTE);
+		case "W-DEFEA" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.DEFEAT, x, y, EnumCategory.ATTRIBUTE);
 		case "W-SINK" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.SINK, x, y, EnumCategory.ATTRIBUTE);
 		case "E-BABA" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.BABA, x, y);
 		case "E-FLAG" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.FLAG, x, y);

@@ -23,7 +23,7 @@ import view.View;
 
 public class Controller {
 	public static void main(String[] args) {
-		Model model = new Model("level0.txt");
+		Model model = new Model("level6.txt");
 		Cell[][] grid = model.getGrid();
 		model.displayGrid();
 
