@@ -23,7 +23,7 @@ import view.View;
 
 public class Controller {
 	public static void main(String[] args) {
-		Model model = new Model("level6.txt");
+		Model model = new Model("level0.txt");
 		Cell[][] grid = model.getGrid();
 		model.displayGrid();
 
@@ -110,6 +110,9 @@ public class Controller {
 					System.out.println("Going up !");
 					for (int i = 0; i < grid.length; i++) {
 						for (int j = 0; j < grid[0].length; j++) {
+							if (grid[i][j].isEmpty()) {
+								continue;
+							}
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
@@ -126,7 +129,7 @@ public class Controller {
 					}
 
 					for (Block block : blocks) {
-						block.move(context, model, sizeGridX, sizeGridY, EnumDirection.NORTH);
+						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.NORTH);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
@@ -139,6 +142,9 @@ public class Controller {
 					System.out.println("Going down !");
 					for (int i = 0; i < grid.length; i++) {
 						for (int j = 0; j < grid[0].length; j++) {
+							if (grid[i][j].isEmpty()) {
+								continue;
+							}
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
@@ -155,7 +161,7 @@ public class Controller {
 					}
 
 					for (Block block : blocks) {
-						block.move(context, model, sizeGridX, sizeGridY, EnumDirection.SOUTH);
+						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.SOUTH);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
@@ -168,6 +174,9 @@ public class Controller {
 					System.out.println("Going right !");
 					for (int i = 0; i < grid.length; i++) {
 						for (int j = 0; j < grid[0].length; j++) {
+							if (grid[i][j].isEmpty()) {
+								continue;
+							}
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
@@ -184,7 +193,7 @@ public class Controller {
 					}
 
 					for (Block block : blocks) {
-						block.move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
+						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.EAST);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
@@ -197,6 +206,9 @@ public class Controller {
 					System.out.println("Going left !");
 					for (int i = 0; i < grid.length; i++) {
 						for (int j = 0; j < grid[0].length; j++) {
+							if (grid[i][j].isEmpty()) {
+								continue;
+							}
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
@@ -213,7 +225,7 @@ public class Controller {
 					}
 
 					for (Block block : blocks) {
-						block.move(context, model, sizeGridX, sizeGridY, EnumDirection.WEST);
+						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.WEST);
 					}
 
 				}
@@ -235,6 +247,14 @@ public class Controller {
 
 				View.draw(context, sizeGridX, sizeGridY, model.getGrid());
 				model.displayGrid();
+
+				model.refreshRules();
+				System.out.println("\n***** TEST DES RULES *****\n");
+				HashSet<Rule> rule_temp = model.getRules();
+				for (Rule rule : rule_temp) {
+					System.out.println(rule.getRuleFirstWord() + " IS " + rule.getRuleSecondWord());
+				}
+				System.out.println("\n*** FIN TEST DES RULES ***\n");
 
 				System.out.println(event);
 			}

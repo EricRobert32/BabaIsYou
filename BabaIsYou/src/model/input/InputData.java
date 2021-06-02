@@ -55,7 +55,10 @@ public class InputData {
 				String s = sc2.next();
 				grid[i][j] = new Cell();
 				/*System.out.println("Calling with height = " + height + " ; width = " + width + " ; i = " + i + " ; j = " + j);*/
-				grid[i][j].addBlock(stringToBlock(height, width, i, j, s));
+				Block b = stringToBlock(height, width, i, j, s);
+				if (b !=null){
+                    grid[i][j].addBlock(b);
+                }
 				j++;
 			}
 			sc2.close();

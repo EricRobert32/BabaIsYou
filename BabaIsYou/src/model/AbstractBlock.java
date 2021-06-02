@@ -1,8 +1,10 @@
 package model;
 
-import fr.umlv.zen5.ApplicationContext;
+import java.util.Objects;
+
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
+import view.Sprite;
 
 /**
  * Class that represent a element block
@@ -14,6 +16,7 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	private final EnumWord name;
 	private int x;
 	private int y;
+	private Sprite image;
 	
 	/**
 	 * Block constructor
@@ -32,6 +35,13 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		
+		if (this.getClass() == ElementBlock.class) {
+			this.image = new Sprite(this.name, "E-");
+		}
+		else {
+			this.image = new Sprite(this.name, "W-");
+		}
 	}
 	
 	/**
@@ -58,39 +68,35 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 		return this.y;
 	}
 	
+	public Sprite getImage() {
+		return this.image;
+	}
+	
 	/**
 	 * Move the block in a certain direction
-	 * @param direction		direction in which the piece is pushed
-	 * @return true is the block has been pushed or then false
+	 * @param dir	direction in which the piece is pushed
+	 *
 	 */
-	public boolean move(ApplicationContext context, Model model, int sizeGridX, int sizeGridY, EnumDirection direction) {
-		float width = context.getScreenInfo().getWidth();
-		float height = context.getScreenInfo().getHeight();
-		
-		if (direction == EnumDirection.NORTH && (this.x - 1) * (height / sizeGridX) >= 0) {
-			model.removeBlock(this.x, this.y, this);
-			this.x = this.x - 1;
-			model.addBlocks(this.x, this.y, this);
-			return true;
+	public void move(EnumDirection dir) {
+		switch (dir) {
+			case EAST -> y++;
+			case WEST -> y--;
+			case NORTH -> x--;
+			case SOUTH -> x++;
 		}
-		if (direction == EnumDirection.SOUTH && (this.x + 1) * (height / sizeGridX) < height) {
-			model.removeBlock(this.x, this.y, this);
-			this.x = this.x + 1;
-			model.addBlocks(this.x, this.y, this);
-			return true;
-		}
-		if (direction == EnumDirection.EAST && (this.y + 1) * (width / sizeGridY) < width) {
-			model.removeBlock(this.x, this.y, this);
-			this.y = this.y + 1;
-			model.addBlocks(this.x, this.y, this);
-			return true;
-		}
-		if (direction == EnumDirection.WEST && (this.y - 1) * (width / sizeGridY) >= 0) {
-			model.removeBlock(this.x, this.y, this);
-			this.y = this.y - 1;
-			model.addBlocks(this.x, this.y, this);
-			return true;
-		}
-		return false;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		AbstractBlock that = (AbstractBlock) o;
+		return x == that.x && y == that.y && name == that.name;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, x, y);
 	}
 }
