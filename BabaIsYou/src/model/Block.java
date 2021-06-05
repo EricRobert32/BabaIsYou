@@ -12,10 +12,7 @@ import view.Sprite;
  * @version 1
  */
 public sealed interface Block permits AbstractBlock{
-	int getX();
-	int getY();
 	EnumWord getName();
 	public Sprite getImage();
-	void move(EnumDirection dir);
 	String toString();
 }

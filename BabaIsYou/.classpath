@@ -7,5 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/zen5"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resource"/>
+	<classpathentry kind="lib" path="C:/Users/erict/Desktop/Cour/TP/zen5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

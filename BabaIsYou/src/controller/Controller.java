@@ -106,6 +106,7 @@ public class Controller {
 					 * CHACUN DES BLOCS DU TABLEAU DE BLOCKS
 					 */
 					ArrayList<Block> blocks = new ArrayList<Block>();
+					ArrayList<Integer[]> pos = new ArrayList<>();
 
 					System.out.println("Going up !");
 					for (int i = 0; i < grid.length; i++) {
@@ -116,20 +117,22 @@ public class Controller {
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
-									System.out.println("MOVING ! elem block BABA from x = " + block.getX() + " & y = "
-											+ block.getY() + " to coords x = " + (block.getX() - 1) + " & y = "
-											+ block.getY());
+									System.out.println("MOVING ! elem block BABA from x = " + i + " & y = "
+											+ j + " to coords x = " + (i - 1) + " & y = "
+											+ j);
 									/*
 									 * block.move(context, model, sizeGridX, sizeGridY, EnumDirection.NORTH);
 									 */
 									blocks.add(block);
+									Integer[] tmp = {i,j};
+									pos.add(tmp);
 								}
 							}
 						}
 					}
 
-					for (Block block : blocks) {
-						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.NORTH);
+					for (int i = 0; i < blocks.size(); i++) {
+						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.NORTH);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
@@ -138,6 +141,7 @@ public class Controller {
 					 * CHACUN DES BLOCS DU TABLEAU DE BLOCKS
 					 */
 					ArrayList<Block> blocks = new ArrayList<Block>();
+					ArrayList<Integer[]> pos = new ArrayList<>();
 
 					System.out.println("Going down !");
 					for (int i = 0; i < grid.length; i++) {
@@ -148,20 +152,22 @@ public class Controller {
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
-									System.out.println("MOVING ! elem block BABA from x = " + block.getX() + " & y = "
-											+ block.getY() + " to coords x = " + (block.getX() + 1) + " & y = "
-											+ block.getY());
+									System.out.println("MOVING ! elem block BABA from x = " + i + " & y = "
+											+ j + " to coords x = " + (i + 1) + " & y = "
+											+ j);
 									/*
 									 * block.move(context, model, sizeGridX, sizeGridY, EnumDirection.SOUTH);
 									 */
 									blocks.add(block);
+									Integer[] tmp = {i,j};
+									pos.add(tmp);
 								}
 							}
 						}
 					}
 
-					for (Block block : blocks) {
-						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.SOUTH);
+					for (int i = 0; i < blocks.size(); i++) {
+						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.SOUTH);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
@@ -170,6 +176,7 @@ public class Controller {
 					 * CHACUN DES BLOCS DU TABLEAU DE BLOCKS
 					 */
 					ArrayList<Block> blocks = new ArrayList<Block>();
+					ArrayList<Integer[]> pos = new ArrayList<>();
 
 					System.out.println("Going right !");
 					for (int i = 0; i < grid.length; i++) {
@@ -180,20 +187,22 @@ public class Controller {
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
-									System.out.println("MOVING ! elem block BABA from x = " + block.getX() + " & y = "
-											+ block.getY() + " to coords x = " + block.getX() + " & y = "
-											+ (block.getY() + 1));
+									System.out.println("MOVING ! elem block BABA from x = " + i + " & y = "
+											+ j + " to coords x = " + i + " & y = "
+											+ (j + 1));
 									/*
 									 * block.move(context, model, sizeGridX, sizeGridY, EnumDirection.EAST);
 									 */
 									blocks.add(block);
+									Integer[] tmp = {i,j};
+									pos.add(tmp);									
 								}
 							}
 						}
 					}
 
-					for (Block block : blocks) {
-						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.EAST);
+					for (int i = 0; i < blocks.size(); i++) {
+						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.EAST);
 					}
 
 				} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
@@ -202,6 +211,7 @@ public class Controller {
 					 * CHACUN DES BLOCS DU TABLEAU DE BLOCKS
 					 */
 					ArrayList<Block> blocks = new ArrayList<Block>();
+					ArrayList<Integer[]> pos = new ArrayList<>();
 
 					System.out.println("Going left !");
 					for (int i = 0; i < grid.length; i++) {
@@ -212,20 +222,22 @@ public class Controller {
 							Block block = grid[i][j].getBlock(0);
 							if (block != null) {
 								if (block.getName() == EnumWord.BABA && block.getClass() == ElementBlock.class) {
-									System.out.println("MOVING ! elem block BABA from x = " + block.getX() + " & y = "
-											+ block.getY() + " to coords x = " + block.getX() + " & y = "
-											+ (block.getY() - 1));
+									System.out.println("MOVING ! elem block BABA from x = " + i + " & y = "
+											+ j + " to coords x = " + i + " & y = "
+											+ (j - 1));
 									/*
 									 * block.move(context, model, sizeGridX, sizeGridY, EnumDirection.WEST);
 									 */
 									blocks.add(block);
+									Integer[] tmp = {i,j};
+									pos.add(tmp);											
 								}
 							}
 						}
 					}
 
-					for (Block block : blocks) {
-						model.moveBlock(block.getX(), block.getY(), block, EnumDirection.WEST);
+					for (int i = 0; i < blocks.size(); i++) {
+						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.WEST);
 					}
 
 				}

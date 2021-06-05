@@ -40,7 +40,7 @@ public class InputData {
 		System.out.println("Height = " + height + " ; width = " + width);
 
 		Cell[][] grid = new Cell[height][width];
-		
+
 		sc = null;
 		try {
 			sc = new Scanner(new File("./src/levels/" + file));
@@ -54,11 +54,14 @@ public class InputData {
 			while (sc2.hasNext()) {
 				String s = sc2.next();
 				grid[i][j] = new Cell();
-				/*System.out.println("Calling with height = " + height + " ; width = " + width + " ; i = " + i + " ; j = " + j);*/
+				/*
+				 * System.out.println("Calling with height = " + height + " ; width = " + width
+				 * + " ; i = " + i + " ; j = " + j);
+				 */
 				Block b = stringToBlock(height, width, i, j, s);
-				if (b !=null){
-                    grid[i][j].addBlock(b);
-                }
+				if (b != null) {
+					grid[i][j].addBlock(b);
+				}
 				j++;
 			}
 			sc2.close();
@@ -72,29 +75,29 @@ public class InputData {
 	private static Block stringToBlock(int sizeGridX, int sizeGridY, int x, int y, String s) {
 		Block block = null;
 		return switch (s) {
-		case "W-BABA" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.BABA, x, y, EnumCategory.NOUN);
-		case "W-FLAG" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.FLAG, x, y, EnumCategory.NOUN);
-		case "W-WALL" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.WALL, x, y, EnumCategory.NOUN);
-		case "W-WATER" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.WATER, x, y, EnumCategory.NOUN);
-		case "W-SKULL" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.SKULL, x, y, EnumCategory.NOUN);
-		case "W-LAVA" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.LAVA, x, y, EnumCategory.NOUN);
-		case "W-ROCK" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.ROCK, x, y, EnumCategory.NOUN);
-		case "W-IS" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.IS, x, y, EnumCategory.OPERATOR);
-		case "W-YOU" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.YOU, x, y, EnumCategory.ATTRIBUTE);
-		case "W-WIN" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.WIN, x, y, EnumCategory.ATTRIBUTE);
-		case "W-STOP" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.STOP, x, y, EnumCategory.ATTRIBUTE);
-		case "W-PUSH" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.PUSH, x, y, EnumCategory.ATTRIBUTE);
-		case "W-MELT" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.MELT, x, y, EnumCategory.ATTRIBUTE);
-		case "W-HOT" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.HOT, x, y, EnumCategory.ATTRIBUTE);
-		case "W-DEFEA" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.DEFEAT, x, y, EnumCategory.ATTRIBUTE);
-		case "W-SINK" -> block = new WordBlock(sizeGridX, sizeGridY, EnumWord.SINK, x, y, EnumCategory.ATTRIBUTE);
-		case "E-BABA" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.BABA, x, y);
-		case "E-FLAG" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.FLAG, x, y);
-		case "E-WALL" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.WALL, x, y);
-		case "E-WATER" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.WATER, x, y);
-		case "E-SKULL" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.SKULL, x, y);
-		case "E-LAVA" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.LAVA, x, y);
-		case "E-ROCK" -> block = new ElementBlock(sizeGridX, sizeGridY, EnumWord.ROCK, x, y);
+		case "W-BABA" -> block = new WordBlock(EnumWord.BABA, EnumCategory.NOUN);
+		case "W-FLAG" -> block = new WordBlock(EnumWord.FLAG, EnumCategory.NOUN);
+		case "W-WALL" -> block = new WordBlock(EnumWord.WALL, EnumCategory.NOUN);
+		case "W-WATER" -> block = new WordBlock(EnumWord.WATER, EnumCategory.NOUN);
+		case "W-SKULL" -> block = new WordBlock(EnumWord.SKULL, EnumCategory.NOUN);
+		case "W-LAVA" -> block = new WordBlock(EnumWord.LAVA, EnumCategory.NOUN);
+		case "W-ROCK" -> block = new WordBlock(EnumWord.ROCK, EnumCategory.NOUN);
+		case "W-IS" -> block = new WordBlock(EnumWord.IS, EnumCategory.OPERATOR);
+		case "W-YOU" -> block = new WordBlock(EnumWord.YOU, EnumCategory.ATTRIBUTE);
+		case "W-WIN" -> block = new WordBlock(EnumWord.WIN, EnumCategory.ATTRIBUTE);
+		case "W-STOP" -> block = new WordBlock(EnumWord.STOP, EnumCategory.ATTRIBUTE);
+		case "W-PUSH" -> block = new WordBlock(EnumWord.PUSH, EnumCategory.ATTRIBUTE);
+		case "W-MELT" -> block = new WordBlock(EnumWord.MELT, EnumCategory.ATTRIBUTE);
+		case "W-HOT" -> block = new WordBlock(EnumWord.HOT, EnumCategory.ATTRIBUTE);
+		case "W-DEFEA" -> block = new WordBlock(EnumWord.DEFEAT, EnumCategory.ATTRIBUTE);
+		case "W-SINK" -> block = new WordBlock(EnumWord.SINK, EnumCategory.ATTRIBUTE);
+		case "E-BABA" -> block = new ElementBlock(EnumWord.BABA);
+		case "E-FLAG" -> block = new ElementBlock(EnumWord.FLAG);
+		case "E-WALL" -> block = new ElementBlock(EnumWord.WALL);
+		case "E-WATER" -> block = new ElementBlock(EnumWord.WATER);
+		case "E-SKULL" -> block = new ElementBlock(EnumWord.SKULL);
+		case "E-LAVA" -> block = new ElementBlock(EnumWord.LAVA);
+		case "E-ROCK" -> block = new ElementBlock(EnumWord.ROCK);
 		default -> block;
 		};
 	}

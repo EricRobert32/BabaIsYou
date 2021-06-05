@@ -1,5 +1,6 @@
 package model;
 
+import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
 
 /**
@@ -15,8 +16,8 @@ public final class ElementBlock extends AbstractBlock {
 	 * @param x
 	 * @param y
 	 */
-	public ElementBlock(int sizeGridX, int sizeGridY, EnumWord name, int x, int y) {
-		super(sizeGridX, sizeGridY, name, x, y);
+	public ElementBlock(EnumWord name) {
+		super(name);
 	}
 	
 	/*public void destroy() {
@@ -29,6 +30,8 @@ public final class ElementBlock extends AbstractBlock {
 	 */
 	@Override
 	public String toString() {
-		return super.getName() + " (" + super.getX() + ", " + super.getY() + ") ";
+		return super.toString();
 	}
+
+
 }
