@@ -1,3 +1,4 @@
+18 33
 W-WALL	W-IS	W-STOP	E-LAVA	E-LAVA	-		E-WALL	-		-		-		-		-		E-WALL	-		-		-		E-WALL	-		-		-		E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	-		-		-		-		-		-
 E-LAVA	E-LAVA	E-LAVA	E-LAVA	-		-		E-WALL	-		-		-		-		-		-		-		E-BABA	-		E-WALL	-		-		E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	-		-		-		-		-		-		-
 E-LAVA	E-LAVA	-		-		-		-		E-WALL	-		-		-		-		-		E-WALL	-		-		-		E-WALL	-		-		E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	E-LAVA	-		-		-		-		-		-		-		-

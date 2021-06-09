@@ -1,3 +1,4 @@
+16 22
 W-BABA	W-WALL	E-WALL	-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-
 W-IS	W-IS	E-WALL	-		-		-		-		E-WALL	E-WALL	E-WALL	E-WALL	E-WALL	E-WALL	E-WALL	E-WALL	-		-		-		-		-		-		-
 W-YOU	W-STOP	E-WALL	-		-		-		-		E-WALL	-		-		-		-		-		-		E-WALL	-		-		-		-		-		-		-

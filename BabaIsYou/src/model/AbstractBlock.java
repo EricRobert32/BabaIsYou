@@ -1,8 +1,5 @@
 package model;
 
-import java.util.Objects;
-
-import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
 import view.Sprite;
 
@@ -19,14 +16,9 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	/**
 	 * Block constructor
 	 * @param name
-	 * @param x
-	 * @param y
 	 */
 	public AbstractBlock(EnumWord name) {
-
-		
 		this.name = name;
-
 		
 		if (this.getClass() == ElementBlock.class) {
 			this.image = new Sprite(this.name, "E-");
@@ -38,7 +30,7 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	
 	/**
 	 * Send back the name of the block
-	 * @return the coordinate x
+	 * @return the name
 	 */
 	public EnumWord getName() {
 		return this.name;
@@ -48,22 +40,22 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 		return this.image;
 	}
 	
-	
 	@Override
+	public String toString() {
+		return this.name.toString();
+	}
+	
+	/*@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AbstractBlock that = (AbstractBlock) o;
-		return name == that.name;
+		return x == that.x && y == that.y && name == that.name;
 	}
 
-	@Override
-	public String toString() {
-		return name.toString();
-	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(name);
-	}
+		return Objects.hash(name, x, y);
+	}*/
 }

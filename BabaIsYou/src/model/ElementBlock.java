@@ -1,6 +1,5 @@
 package model;
 
-import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
 
 /**
@@ -13,25 +12,17 @@ public final class ElementBlock extends AbstractBlock {
 	/**
 	 * ElementBlock constructor
 	 * @param name
-	 * @param x
-	 * @param y
 	 */
 	public ElementBlock(EnumWord name) {
 		super(name);
 	}
 	
-	/*public void destroy() {
-		
-	}*/
-	
 	/**
 	 * Return a string representation of the element block
-	 * @return a String with the name, x and y of the element block
+	 * @return a String with the name of the element block
 	 */
 	@Override
 	public String toString() {
 		return super.toString();
 	}
-
-
 }

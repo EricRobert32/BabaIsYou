@@ -1,3 +1,4 @@
+18 24
 -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-
 -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-
 -		-		-		-		-		-		-		-		-		E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  -		-		-		-		-		-		-

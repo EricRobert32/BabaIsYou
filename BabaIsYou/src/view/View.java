@@ -23,19 +23,6 @@ public class View {
 		context.renderFrame(graphics -> {
 			graphics.setColor(Color.BLACK);
 			graphics.fill(new Rectangle2D.Float(0, 0, width, height));
-		});
-
-		/*
-		 * for (Block block : blocks) { float minX = block.getX() * (width / sizeGridX);
-		 * float maxX = width / sizeGridX; float minY = block.getY() * (height /
-		 * sizeGridY); float maxY = height / sizeGridY;
-		 * 
-		 * context.renderFrame(graphics -> { if (block.getClass() == ElementBlock.class)
-		 * { graphics.setColor(Color.WHITE); } else { graphics.setColor(Color.RED); }
-		 * graphics.fill(new Rectangle2D.Float(minX, minY, maxX, maxY)); }); }
-		 */
-
-		context.renderFrame(graphics -> {
 			for (int i = 0; i < grid.length; i++) {
 				for (int j = 0; j < grid[0].length; j++) {
 					int minY = (int) (j * (width / sizeGridY));

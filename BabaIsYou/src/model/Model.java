@@ -1,6 +1,10 @@
 package model;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
@@ -9,10 +13,14 @@ import model.input.InputData;
 
 public class Model {
 	private Cell[][] grid;
-	private HashSet<Rule> rules;
+	private HashMap<EnumWord, Set<EnumWord>> rules;
 
 	public Model(String file) {
-		this.grid = InputData.readFile(file);
+		try {
+			this.grid = InputData.readFile(file);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("File " + file + " do not exist");
+		}
 		this.rules = this.generateRules(this.grid);
 	}
 
@@ -24,10 +32,10 @@ public class Model {
 		return grid[0].length;
 	}
 
-	public HashSet<Rule> getRules() {
+	public HashMap<EnumWord, Set<EnumWord>> getRules() {
 		return this.rules;
 	}
-	
+
 	public void refreshRules() {
 		this.rules = this.generateRules(this.grid);
 	}
@@ -49,32 +57,37 @@ public class Model {
 	 * grid[line][column].removeBlock(bloc); }
 	 */
 
-	private boolean verifiedBlock(int line, int column, Block block) {
-		for (Rule r : rules) {
-			if (r.getRuleFirstWord() == block.getName()) {
-				if (block.getClass() == WordBlock.class) {
-					return true;
-				}
-				if (r.getRuleSecondWord() == EnumWord.STOP) {
-					return false;
-				} else if (r.getRuleSecondWord() == EnumWord.PUSH) {
-					return true;
-				}
+	private String verifiedBlock(int line, int column, Block block) {
+		if (rules.containsKey(block.getName()) && !(block.getClass() == WordBlock.class)) {
+			var rule = rules.get(block.getName());
+			if (rule.contains(EnumWord.STOP)) {
+				return "STOP";
+			} else if (rule.contains(EnumWord.PUSH)) {
+				return "PUSH";
+			} else if (rule.contains(EnumWord.DEFEAT)) {
+				return "DEFEAT"; /* LE BLOCK QUI ARRIVE MEURT */
+			} else if (rule.contains(EnumWord.SINK)) {
+				return "SINK"; /* LE BLOCK QUI ARRIVE MEURT */
+			} else if (rule.contains(EnumWord.MELT)) {
+				return "MELT"; /* EST DETRUIT SI LE BLOCK QUI ARRIVE EST HOT */
+			} else if (rule.contains(EnumWord.WIN)) {
+				return "WIN"; /* LE BLOCK QUI ARRIVE GAGNE */
+			} else if (rule.contains(EnumWord.HOT)) {
+				return "HOT"; /* DETRUIT LE BLOCK QUI ARRIVE SI CE BLOCK EST MELT */
 			}
 		}
-		return true;
+		return "NOTHING";
 	}
 
 	public boolean moveBlock(int line, int column, Block block, EnumDirection dir) {
-
 		/* For each block, if a block can t interact */
 		for (int i = 0; i < grid[line][column].size(); i++) {
-			if (!verifiedBlock(line, column, grid[line][column].getBlock(i))) {
+			if (verifiedBlock(line, column, grid[line][column].getBlock(i)) == "STOP") {
 				return false;
 			}
 		}
 		switch (dir) {
-		case EAST:
+		case RIGHT:
 			if (column + 1 >= grid[0].length) {
 				return false;
 			}
@@ -93,7 +106,7 @@ public class Model {
 				}
 			}
 			return false;
-		case WEST:
+		case LEFT:
 			if (column - 1 < 0) {
 				return false;
 			}
@@ -112,7 +125,7 @@ public class Model {
 				}
 			}
 			return false;
-		case NORTH:
+		case TOP:
 			if (line - 1 < 0) {
 				return false;
 			}
@@ -130,7 +143,7 @@ public class Model {
 				}
 			}
 			return false;
-		case SOUTH:
+		case BOTTOM:
 			if (line + 1 >= grid.length) {
 				return false;
 			}
@@ -151,7 +164,6 @@ public class Model {
 		default:
 			throw new IllegalArgumentException("Wrong direction : " + dir);
 		}
-
 	}
 
 	public void displayGrid() {
@@ -174,46 +186,10 @@ public class Model {
 		return grid;
 	}
 
-//	/* MÉTHODE PLUS UTILISÉE */
-//	public boolean verifySentence(WordBlock w1, WordBlock w2, WordBlock w3) {
-//		if (w1.getCategory() == EnumCategory.NOUN && w2.getCategory() == EnumCategory.OPERATOR
-//				&& (w3.getCategory() == EnumCategory.NOUN || w3.getCategory() == EnumCategory.ATTRIBUTE)) {
-//			/*
-//			 * System.out.println("The 3 words are in the order '" + w1.getCategory() +
-//			 * " - " + w2.getCategory() + " - " + w3.getCategory() + "'");
-//			 */
-//			if (w1.getX() == w2.getX() && w2.getX() == w3.getX()) {
-//				/* System.out.println("The 3 words are on the same column"); */
-//				if (w1.getY() == (w2.getY() - 1) && (w2.getY() + 1) == w3.getY()) {
-//					/* System.out.println("The 3 words are one after the other"); */
-//					return true;
-//				}
-//				/* System.out.println("The 3 words are NOT one after the other"); */
-//				return false;
-//			} else if (w1.getY() == w2.getY() && w2.getY() == w3.getY()) {
-//				/* System.out.println("The 3 words are on the same line"); */
-//				if (w1.getX() == (w2.getX() - 1) && (w2.getX() + 1) == w3.getX()) {
-//					/* System.out.println("The 3 words are one after the other"); */
-//					return true;
-//				}
-//				/* System.out.println("The 3 words are NOT one after the other"); */
-//				return false;
-//			}
-//			/*
-//			 * System.out.
-//			 * println("The 3 words are NOT on the same column or on the same line");
-//			 */
-//			return false;
-//		}
-//		/*
-//		 * System.out.println("The 3 words are NOT in the order '" + w1.getCategory() +
-//		 * " - " + w2.getCategory() + " - " + w3.getCategory() + "'");
-//		 */
-//		return false;
-//	}
+	public HashMap<EnumWord, Set<EnumWord>> generateRules(Cell[][] grid) {
+		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
 
-	public HashSet<Rule> generateRules(Cell[][] grid) {
-		HashSet<Rule> rules = new HashSet<>();
+		rules = fillHashMap();
 
 		System.out.println("\n***** GENERATE RULES *****\n");
 
@@ -229,17 +205,17 @@ public class Model {
 				Block blockY2 = null;
 
 				if (j < grid[0].length - 2) {
-                    if (!(grid[i][j + 1].isEmpty()) && !(grid[i][j + 2].isEmpty())) {
-                        blockX1 = grid[i][j + 1].getBlock(0);
-                        blockX2 = grid[i][j + 2].getBlock(0);
-                    }
-                }
-                if (i < grid.length - 2) {
-                    if (!(grid[i + 1][j].isEmpty()) && !(grid[i + 2][j].isEmpty())) {
-                        blockY1 = grid[i + 1][j].getBlock(0);
-                        blockY2 = grid[i + 2][j].getBlock(0);
-                    }
-                }
+					if (!(grid[i][j + 1].isEmpty()) && !(grid[i][j + 2].isEmpty())) {
+						blockX1 = grid[i][j + 1].getBlock(0);
+						blockX2 = grid[i][j + 2].getBlock(0);
+					}
+				}
+				if (i < grid.length - 2) {
+					if (!(grid[i + 1][j].isEmpty()) && !(grid[i + 2][j].isEmpty())) {
+						blockY1 = grid[i + 1][j].getBlock(0);
+						blockY2 = grid[i + 2][j].getBlock(0);
+					}
+				}
 
 				if (block != null) {
 					/* Vérifier phrase sur la ligne */
@@ -251,7 +227,10 @@ public class Model {
 									&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN
 											|| ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
 								System.out.println("Les mots " + block + blockX1 + blockX2 + "forment une phrase");
-								rules.add(new Rule(block.getName(), blockX2.getName()));
+
+								Set<EnumWord> set = rules.get(block.getName());
+								set.add(blockX2.getName());
+								rules.put(block.getName(), set);
 							}
 						}
 					}
@@ -265,7 +244,10 @@ public class Model {
 									&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN
 											|| ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
 								System.out.println("Les mots " + block + blockY1 + blockY2 + "forment une phrase");
-								rules.add(new Rule(block.getName(), blockY2.getName()));
+
+								Set<EnumWord> set = rules.get(block.getName());
+								set.add(blockY2.getName());
+								rules.put(block.getName(), set);
 							}
 						}
 					}
@@ -274,6 +256,20 @@ public class Model {
 		}
 
 		System.out.println("\n*** FIN GENERATE RULES ***\n");
+
+		return rules;
+	}
+
+	private HashMap<EnumWord, Set<EnumWord>> fillHashMap() {
+		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
+
+		rules.put(EnumWord.BABA, new HashSet<EnumWord>());
+		rules.put(EnumWord.FLAG, new HashSet<EnumWord>());
+		rules.put(EnumWord.WALL, new HashSet<EnumWord>());
+		rules.put(EnumWord.WATER, new HashSet<EnumWord>());
+		rules.put(EnumWord.SKULL, new HashSet<EnumWord>());
+		rules.put(EnumWord.LAVA, new HashSet<EnumWord>());
+		rules.put(EnumWord.ROCK, new HashSet<EnumWord>());
 
 		return rules;
 	}

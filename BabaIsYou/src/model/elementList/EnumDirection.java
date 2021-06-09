@@ -8,5 +8,5 @@ package model.elementList;
  */;
 
 public enum EnumDirection {
-	NORTH, SOUTH, EAST, WEST
+	TOP, BOTTOM, RIGHT, LEFT
 }
