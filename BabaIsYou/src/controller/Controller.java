@@ -21,7 +21,7 @@ import view.View;
 
 public class Controller {
 	public static void main(String[] args) {
-		Model model = new Model("level6.txt");
+		Model model = new Model("level0.txt");
 		Cell[][] grid = model.getGrid();
 		model.displayGrid();
 
@@ -46,9 +46,8 @@ public class Controller {
 			ScreenInfo screenInfo = context.getScreenInfo();
 			float width = screenInfo.getWidth();
 			float height = screenInfo.getHeight();
-			System.out.println("size of the screen (" + width + " x " + height + ")");
 
-			View.draw(context, sizeGridX, sizeGridY, model.getGrid());
+			System.out.println("size of the screen (" + width + " x " + height + ")");
 
 			for (;;) {
 				HashMap<EnumWord, Set<EnumWord>> rules_temp = model.getRules();
@@ -117,9 +116,7 @@ public class Controller {
 						}
 					}
 
-					Collections.reverse(blocks);
-
-					for (int i = 0; i < blocks.size(); i++) {
+					for (int i = blocks.size() - 1; i >= 0 ; i--) {
 						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.BOTTOM);
 					}
 
@@ -149,9 +146,7 @@ public class Controller {
 						}
 					}
 
-					Collections.reverse(blocks);
-
-					for (int i = 0; i < blocks.size(); i++) {
+					for (int i = blocks.size() - 1; i >= 0 ; i--) {
 						model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.RIGHT);
 					}
 
