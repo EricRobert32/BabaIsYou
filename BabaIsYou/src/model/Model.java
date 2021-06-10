@@ -226,7 +226,7 @@ public class Model {
 									&& ((WordBlock) blockX1).getCategory() == EnumCategory.OPERATOR
 									&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN
 											|| ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
-								System.out.println("Les mots " + block + blockX1 + blockX2 + "forment une phrase");
+								System.out.println("Les mots " + block.getName() + " " + blockX1.getName() + " " + blockX2.getName() + " forment une phrase");
 
 								Set<EnumWord> set = rules.get(block.getName());
 								set.add(blockX2.getName());
@@ -243,7 +243,7 @@ public class Model {
 									&& ((WordBlock) blockY1).getCategory() == EnumCategory.OPERATOR
 									&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN
 											|| ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
-								System.out.println("Les mots " + block + blockY1 + blockY2 + "forment une phrase");
+								System.out.println("Les mots " + block.getName() + " " + blockY1.getName() + " " + blockY2.getName() + " forment une phrase");
 
 								Set<EnumWord> set = rules.get(block.getName());
 								set.add(blockY2.getName());

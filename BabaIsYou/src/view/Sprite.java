@@ -7,13 +7,11 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
-import model.elementList.EnumCategory;
 import model.elementList.EnumWord;
 
 public class Sprite {
 	private BufferedImage image;
 	public Sprite(EnumWord word, String type) {
-		System.out.println(word);
 		try {
 			this.image = ImageIO.read(Objects.requireNonNull(Sprite.class.getResourceAsStream("/" + type + word + ".png")));
 		} catch (IOException e) {

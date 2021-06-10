@@ -58,22 +58,22 @@ public class InputData {
 	
 	private static Block stringToWordBlock(String s) {
 		return switch (s) {
-		case "W-BABA" -> new WordBlock(EnumWord.BABA, EnumCategory.NOUN);
-		case "W-FLAG" -> new WordBlock(EnumWord.FLAG, EnumCategory.NOUN);
-		case "W-WALL" -> new WordBlock(EnumWord.WALL, EnumCategory.NOUN);
-		case "W-WATER" -> new WordBlock(EnumWord.WATER, EnumCategory.NOUN);
-		case "W-SKULL" -> new WordBlock(EnumWord.SKULL, EnumCategory.NOUN);
-		case "W-LAVA" -> new WordBlock(EnumWord.LAVA, EnumCategory.NOUN);
-		case "W-ROCK" -> new WordBlock(EnumWord.ROCK, EnumCategory.NOUN);
-		case "W-IS" -> new WordBlock(EnumWord.IS, EnumCategory.OPERATOR);
-		case "W-YOU" -> new WordBlock(EnumWord.YOU, EnumCategory.ATTRIBUTE);
-		case "W-WIN" -> new WordBlock(EnumWord.WIN, EnumCategory.ATTRIBUTE);
-		case "W-STOP" -> new WordBlock(EnumWord.STOP, EnumCategory.ATTRIBUTE);
-		case "W-PUSH" -> new WordBlock(EnumWord.PUSH, EnumCategory.ATTRIBUTE);
-		case "W-MELT" -> new WordBlock(EnumWord.MELT, EnumCategory.ATTRIBUTE);
-		case "W-HOT" -> new WordBlock(EnumWord.HOT, EnumCategory.ATTRIBUTE);
-		case "W-DEFEA" -> new WordBlock(EnumWord.DEFEAT, EnumCategory.ATTRIBUTE);
-		case "W-SINK" -> new WordBlock(EnumWord.SINK, EnumCategory.ATTRIBUTE);
+			case "W-BABA" -> new WordBlock(EnumWord.BABA, EnumCategory.NOUN);
+			case "W-FLAG" -> new WordBlock(EnumWord.FLAG, EnumCategory.NOUN);
+			case "W-WALL" -> new WordBlock(EnumWord.WALL, EnumCategory.NOUN);
+			case "W-WATER" -> new WordBlock(EnumWord.WATER, EnumCategory.NOUN);
+			case "W-SKULL" -> new WordBlock(EnumWord.SKULL, EnumCategory.NOUN);
+			case "W-LAVA" -> new WordBlock(EnumWord.LAVA, EnumCategory.NOUN);
+			case "W-ROCK" -> new WordBlock(EnumWord.ROCK, EnumCategory.NOUN);
+			case "W-IS" -> new WordBlock(EnumWord.IS, EnumCategory.OPERATOR);
+			case "W-YOU" -> new WordBlock(EnumWord.YOU, EnumCategory.ATTRIBUTE);
+			case "W-WIN" -> new WordBlock(EnumWord.WIN, EnumCategory.ATTRIBUTE);
+			case "W-STOP" -> new WordBlock(EnumWord.STOP, EnumCategory.ATTRIBUTE);
+			case "W-PUSH" -> new WordBlock(EnumWord.PUSH, EnumCategory.ATTRIBUTE);
+			case "W-MELT" -> new WordBlock(EnumWord.MELT, EnumCategory.ATTRIBUTE);
+			case "W-HOT" -> new WordBlock(EnumWord.HOT, EnumCategory.ATTRIBUTE);
+			case "W-DEFEA" -> new WordBlock(EnumWord.DEFEAT, EnumCategory.ATTRIBUTE);
+			case "W-SINK" -> new WordBlock(EnumWord.SINK, EnumCategory.ATTRIBUTE);
 		default -> null;
 		};
 	}

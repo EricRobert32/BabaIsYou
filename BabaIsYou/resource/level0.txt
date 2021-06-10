@@ -8,7 +8,7 @@
 -       -       -       -       -       -       -       -       -       -       -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		
 -		-		-		-		-		-		-		-		-		-		-		E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL	-		-		-		-		-		-		-		-		-		-		-		
 -		-		-		-		-		-		-		-		-		-		-		-       -		-		-		-       E-ROCK  -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		
--		-		-		-		-		-		-		-		-		-		-		E-BABA	E-BABA	E-BABA	-       -       E-ROCK  -		-		-       E-FLAG  -		-		-		-		-		-		-		-		-		-		-		-		
+-		-		-		-		-		-		-		-		-		-		-		-		E-BABA	-		-       -       E-ROCK  -		-		-       E-FLAG  -		-		-		-		-		-		-		-		-		-		-		-		
 -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		E-ROCK  -		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		
 -		-		-		-		-		-		-		-		-		-		-		E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL  E-WALL	-		-		-		-		-		-		-		-		-		-		-		
 -		-		-		-		-		-		-		-		-		-		-		-       -       -       -       -       -       -       -       -       -       -		-		-		-		-		-		-		-		-		-		-		-		
