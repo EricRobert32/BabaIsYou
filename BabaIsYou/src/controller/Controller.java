@@ -100,7 +100,7 @@ public class Controller {
 				System.out.println("Restarting this level !");
 				playLevel(context, level);
 				return;
-			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.N) {
+			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.N || blockIsYouAndWin(rules)) {
 				System.out.println("Leaving this level !");
 				return;
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
@@ -265,5 +265,27 @@ public class Controller {
 			}
 		}
 		return true;
+	}
+
+	public static boolean blockIsYouAndWin(HashMap<EnumWord, Set<EnumWord>> rules) {
+		boolean blockIsYou, blockIsWin;
+		for (var rule : rules.entrySet()) {
+			if (!(rule.getValue().isEmpty())) {
+				blockIsYou = false;
+				blockIsWin = false;
+				for (var value : rule.getValue()) {
+					if (value == EnumWord.YOU) {
+						blockIsYou = true;
+					} else if (value == EnumWord.WIN) {
+						blockIsWin = true;
+					}
+					System.out.println(rule.getKey() + " IS " + value);
+				}
+				if (blockIsYou && blockIsWin) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
