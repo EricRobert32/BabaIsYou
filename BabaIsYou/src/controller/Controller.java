@@ -102,12 +102,12 @@ public class Controller {
 				System.out.println("Leaving the game !");
 				context.exit(0);
 				return;
-			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.R || noMoreXIsYou(rules, grid)) {
+			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.R || model.noMoreXIsYou()) {
 				System.out.println("Restarting this level !");
 				playLevel(context, level);
 				return;
-			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.N || blockIsYouAndWin(rules)
-					|| blockYouIsOnBlockWin(rules, grid)) {
+			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.N || model.blockIsYouAndWin()
+					|| model.blockYouIsOnBlockWin()) {
 				System.out.println("You won this level, leaving this level !");
 				return;
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
@@ -262,193 +262,10 @@ public class Controller {
 			System.out.println("\n*** FIN TEST DES RULES ***\n");*/
 			/****** Fin test des rules ******/
 
-			destroyBlockXIfIsOnBlockY(EnumWord.YOU, EnumWord.DEFEAT, rules, grid);
-			destroyBlockXIfIsOnBlockY(EnumWord.MELT, EnumWord.HOT, rules, grid);
-			destroyBlockXAndBlockSinkIsInTheSameCell(rules, grid);
-			transformABlockIfARuleSaidSo(rules, grid);
-		}
-	}
-
-	public static boolean noMoreXIsYou(HashMap<EnumWord, Set<EnumWord>> rules, Cell[][] grid) {
-		Set<EnumWord> setBlocOfYou = new HashSet<EnumWord>();
-		for (var rule : rules.entrySet()) {
-			if (!(rule.getValue().isEmpty())) {
-				for (var value : rule.getValue()) {
-					if (value == EnumWord.YOU) {
-						/* return false; *//* Vérifier si un "value" au moins est dans le jeu */
-						setBlocOfYou.add(rule.getKey());
-					}
-				}
-			}
-		}
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				for (EnumWord word : setBlocOfYou) {
-					for (int k = 0; k < grid[i][j].size(); k++) {
-						Block block = grid[i][j].getBlock(k);
-						if (block.getName() == word && block.getClass() == ElementBlock.class) {
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	public static boolean blockIsYouAndWin(HashMap<EnumWord, Set<EnumWord>> rules) {
-		boolean blockIsYou, blockIsWin;
-		for (var rule : rules.entrySet()) {
-			if (!(rule.getValue().isEmpty())) {
-				blockIsYou = false;
-				blockIsWin = false;
-				for (var value : rule.getValue()) {
-					if (value == EnumWord.YOU) {
-						blockIsYou = true;
-					} else if (value == EnumWord.WIN) {
-						blockIsWin = true;
-					}
-				}
-				if (blockIsYou && blockIsWin) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean blockYouIsOnBlockWin(HashMap<EnumWord, Set<EnumWord>> rules, Cell[][] grid) {
-		boolean cellHasYou, cellHasWin;
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				cellHasYou = false;
-				cellHasWin = false;
-				for (int k = 0; k < grid[i][j].size(); k++) {
-					Block block = grid[i][j].getBlock(k);
-					if (rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
-						if (rules.get(block.getName()).contains(EnumWord.YOU)) {
-							cellHasYou = true;
-						} else if (rules.get(block.getName()).contains(EnumWord.WIN)) {
-							cellHasWin = true;
-						}
-					}
-				}
-				if (cellHasYou && cellHasWin) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static void destroyBlockXIfIsOnBlockY(EnumWord enumWordX, EnumWord enumWordY,
-			HashMap<EnumWord, Set<EnumWord>> rules, Cell[][] grid) {
-		boolean cellHasX, cellHasY;
-		HashMap<Integer, Block> mapBlockX;
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				mapBlockX = new HashMap<>();
-				cellHasX = false;
-				cellHasY = false;
-				for (int k = 0; k < grid[i][j].size(); k++) {
-					Block block = grid[i][j].getBlock(k);
-					if (rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
-						if (rules.get(block.getName()).contains(enumWordX)) {
-							cellHasX = true;
-							mapBlockX.put(k, block);
-						}
-						if (rules.get(block.getName()).contains(enumWordY)) {
-							cellHasY = true;
-						}
-					}
-				}
-				if (cellHasX && cellHasY) {
-					Iterator<Entry<Integer, Block>> iterator = mapBlockX.entrySet().iterator();
-					while (iterator.hasNext()) {
-						var pair = iterator.next();
-						grid[i][j].removeBlockAt(pair.getKey());
-						iterator.remove();
-					}
-				}
-			}
-		}
-	}
-
-	public static void destroyBlockXAndBlockSinkIsInTheSameCell(HashMap<EnumWord, Set<EnumWord>> rules, Cell[][] grid) {
-		boolean cellHasOther, cellHasSink;
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				cellHasOther = false;
-				cellHasSink = false;
-				for (int k = 0; k < grid[i][j].size(); k++) {
-					Block block = grid[i][j].getBlock(k);
-					if (rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
-						if (rules.get(block.getName()).contains(EnumWord.SINK)) {
-							cellHasSink = true;
-						} else {
-							cellHasOther = true;
-						}
-					}
-				}
-				if (cellHasOther && cellHasSink) {
-					grid[i][j].removeBlockAt(1);
-					grid[i][j].removeBlockAt(0);
-				}
-			}
-		}
-	}
-
-	public static void transformABlockIfARuleSaidSo(HashMap<EnumWord, Set<EnumWord>> rules, Cell[][] grid) {
-		for (var rule : rules.entrySet()) {
-			if (!(rule.getValue().isEmpty())) {
-				for (var value : rule.getValue()) {
-					switch (value.toString()) {
-					case "BABA": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.BABA, grid);
-						break;
-					}
-					case "FLAG": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.FLAG, grid);
-						break;
-					}
-					case "WALL": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.WALL, grid);
-						break;
-					}
-					case "WATER": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.WATER, grid);
-						break;
-					}
-					case "SKULL": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.SKULL, grid);
-						break;
-					}
-					case "LAVA": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.LAVA, grid);
-						break;
-					}
-					case "ROCK": {
-						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.ROCK, grid);
-						break;
-					}
-					default:
-					}
-				}
-			}
-		}
-	}
-
-	public static void tranformAllBlockXToBlockY(EnumWord enumWordX, EnumWord enumWordY, Cell[][] grid) {
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				for (int k = 0; k < grid[i][j].size(); k++) {
-					Block block = grid[i][j].getBlock(k);
-					if (block.getName() == enumWordX && block.getClass() == ElementBlock.class) {
-						grid[i][j].removeBlockAt(k);
-						grid[i][j].addBlock(new ElementBlock(enumWordY));
-					}
-				}
-			}
+			model.destroyBlockXIfIsOnBlockY(EnumWord.YOU, EnumWord.DEFEAT);
+			model.destroyBlockXIfIsOnBlockY(EnumWord.MELT, EnumWord.HOT);
+			model.destroyBlockXAndBlockSinkIsInTheSameCell();
+			model.transformABlockIfARuleSaidSo();
 		}
 	}
 }

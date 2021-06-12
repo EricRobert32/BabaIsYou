@@ -72,23 +72,18 @@ public class Model {
 			}
 		}
 		return "OTHER";
-
 	}
 
 	public boolean moveBlock(int line, int column, Block block, EnumDirection dir) {
-		System.out.println("Calling on grid[" + line + "][" + column + "] :");
 		if (line < 0 || column < 0 || line >= grid.length || column >= grid[0].length) {
-			System.out.println("     Out of grid !!!!!");
 			return false;
 		} else if (grid[line][column].isEmpty()) {
-			System.out.println("     Nothing here, you can go here !!!!!");
 			return true;
 		}
 		int lineNext;
 		int columnNext;
 		switch (dir) {
 		case RIGHT: {
-			System.out.println("RIGHT");
 			lineNext = line;
 			columnNext = column + 1;
 			if (moveBlock(lineNext, columnNext, block, dir)) {
@@ -119,7 +114,6 @@ public class Model {
 			}
 		}
 		case LEFT: {
-			System.out.println("LEFT");
 			lineNext = line;
 			columnNext = column - 1;
 			if (moveBlock(lineNext, columnNext, block, dir)) {
@@ -150,7 +144,6 @@ public class Model {
 			}
 		}
 		case TOP: {
-			System.out.println("TOP");
 			lineNext = line - 1;
 			columnNext = column;
 			if (moveBlock(lineNext, columnNext, block, dir)) {
@@ -181,7 +174,6 @@ public class Model {
 			}
 		}
 		case BOTTOM: {
-			System.out.println("BOTTOM");
 			lineNext = line + 1;
 			columnNext = column;
 			if (moveBlock(lineNext, columnNext, block, dir)) {
@@ -238,11 +230,7 @@ public class Model {
 
 	public HashMap<EnumWord, Set<EnumWord>> generateRules(Cell[][] grid) {
 		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
-
 		rules = fillHashMap();
-
-		/* System.out.println("\n***** GENERATE RULES *****\n"); */
-
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j].isEmpty()) {
@@ -269,7 +257,6 @@ public class Model {
 					}
 
 					if (block != null) {
-						/* Vérifier phrase sur la ligne */
 						if (blockX1 != null && blockX2 != null) {
 							if (block.getClass() == WordBlock.class && blockX1.getClass() == WordBlock.class
 									&& blockX2.getClass() == WordBlock.class) {
@@ -277,19 +264,12 @@ public class Model {
 										&& ((WordBlock) blockX1).getCategory() == EnumCategory.OPERATOR
 										&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN
 												|| ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
-									/*
-									 * System.out.println("Les mots " + block.getName() + " " + blockX1.getName() +
-									 * " " + blockX2.getName() + " forment une phrase");
-									 */
-
 									Set<EnumWord> set = rules.get(block.getName());
 									set.add(blockX2.getName());
 									rules.put(block.getName(), set);
 								}
 							}
 						}
-
-						/* Vérifier phrase sur la colonne */
 						if (blockY1 != null && blockY2 != null) {
 							if (block.getClass() == WordBlock.class && blockY1.getClass() == WordBlock.class
 									&& blockY2.getClass() == WordBlock.class) {
@@ -297,11 +277,6 @@ public class Model {
 										&& ((WordBlock) blockY1).getCategory() == EnumCategory.OPERATOR
 										&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN
 												|| ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
-									/*
-									 * System.out.println("Les mots " + block.getName() + " " + blockY1.getName() +
-									 * " " + blockY2.getName() + " forment une phrase");
-									 */
-
 									Set<EnumWord> set = rules.get(block.getName());
 									set.add(blockY2.getName());
 									rules.put(block.getName(), set);
@@ -312,9 +287,6 @@ public class Model {
 				}
 			}
 		}
-
-		/* System.out.println("\n*** FIN GENERATE RULES ***\n"); */
-
 		return rules;
 	}
 
@@ -330,5 +302,187 @@ public class Model {
 		rules.put(EnumWord.ROCK, new HashSet<EnumWord>());
 
 		return rules;
+	}
+	
+	public boolean noMoreXIsYou() {
+		Set<EnumWord> setBlockOfYou = new HashSet<EnumWord>();
+		for (var rule : this.rules.entrySet()) {
+			if (!(rule.getValue().isEmpty())) {
+				for (var value : rule.getValue()) {
+					if (value == EnumWord.YOU) {
+						/* return false; *//* Vérifier si un "value" au moins est dans le jeu */
+						setBlockOfYou.add(rule.getKey());
+					}
+				}
+			}
+		}
+		for (int i = 0; i < this.grid.length; i++) {
+			for (int j = 0; j < this.grid[0].length; j++) {
+				for (EnumWord word : setBlockOfYou) {
+					for (int k = 0; k < this.grid[i][j].size(); k++) {
+						Block block = this.grid[i][j].getBlock(k);
+						if (block.getName() == word && block.getClass() == ElementBlock.class) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean blockIsYouAndWin() {
+		boolean blockIsYou, blockIsWin;
+		for (var rule : this.rules.entrySet()) {
+			if (!(rule.getValue().isEmpty())) {
+				blockIsYou = false;
+				blockIsWin = false;
+				for (var value : rule.getValue()) {
+					if (value == EnumWord.YOU) {
+						blockIsYou = true;
+					} else if (value == EnumWord.WIN) {
+						blockIsWin = true;
+					}
+				}
+				if (blockIsYou && blockIsWin) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean blockYouIsOnBlockWin() {
+		boolean cellHasYou, cellHasWin;
+		for (int i = 0; i < this.grid.length; i++) {
+			for (int j = 0; j < this.grid[0].length; j++) {
+				cellHasYou = false;
+				cellHasWin = false;
+				for (int k = 0; k < this.grid[i][j].size(); k++) {
+					Block block = this.grid[i][j].getBlock(k);
+					if (this.rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
+						if (this.rules.get(block.getName()).contains(EnumWord.YOU)) {
+							cellHasYou = true;
+						} else if (this.rules.get(block.getName()).contains(EnumWord.WIN)) {
+							cellHasWin = true;
+						}
+					}
+				}
+				if (cellHasYou && cellHasWin) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void destroyBlockXIfIsOnBlockY(EnumWord enumWordX, EnumWord enumWordY) {
+		boolean cellHasX, cellHasY;
+		HashMap<Integer, Block> mapBlockX;
+		for (int i = 0; i < this.grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				mapBlockX = new HashMap<>();
+				cellHasX = false;
+				cellHasY = false;
+				for (int k = 0; k < this.grid[i][j].size(); k++) {
+					Block block = this.grid[i][j].getBlock(k);
+					if (this.rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
+						if (this.rules.get(block.getName()).contains(enumWordX)) {
+							cellHasX = true;
+							mapBlockX.put(k, block);
+						}
+						if (this.rules.get(block.getName()).contains(enumWordY)) {
+							cellHasY = true;
+						}
+					}
+				}
+				if (cellHasX && cellHasY) {
+					Iterator<Entry<Integer, Block>> iterator = mapBlockX.entrySet().iterator();
+					while (iterator.hasNext()) {
+						var pair = iterator.next();
+						this.grid[i][j].removeBlockAt(pair.getKey());
+						iterator.remove();
+					}
+				}
+			}
+		}
+	}
+
+	public void destroyBlockXAndBlockSinkIsInTheSameCell() {
+		boolean cellHasOther, cellHasSink;
+		for (int i = 0; i < this.grid.length; i++) {
+			for (int j = 0; j < this.grid[0].length; j++) {
+				cellHasOther = false;
+				cellHasSink = false;
+				for (int k = 0; k < this.grid[i][j].size(); k++) {
+					Block block = this.grid[i][j].getBlock(k);
+					if (this.rules.get(block.getName()) != null && block.getClass() == ElementBlock.class) {
+						if (this.rules.get(block.getName()).contains(EnumWord.SINK)) {
+							cellHasSink = true;
+						} else {
+							cellHasOther = true;
+						}
+					}
+				}
+				if (cellHasOther && cellHasSink) {
+					this.grid[i][j].removeBlockAt(1);
+					this.grid[i][j].removeBlockAt(0);
+				}
+			}
+		}
+	}
+
+	public void transformABlockIfARuleSaidSo() {
+		for (var rule : this.rules.entrySet()) {
+			if (!(rule.getValue().isEmpty())) {
+				for (var value : rule.getValue()) {
+					switch (value.toString()) {
+					case "BABA": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.BABA);
+						break;
+					}
+					case "FLAG": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.FLAG);
+						break;
+					}
+					case "WALL": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.WALL);
+						break;
+					}
+					case "WATER": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.WATER);
+						break;
+					}
+					case "SKULL": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.SKULL);
+						break;
+					}
+					case "LAVA": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.LAVA);
+						break;
+					}
+					case "ROCK": {
+						tranformAllBlockXToBlockY(rule.getKey(), EnumWord.ROCK);
+						break;
+					}
+					default:
+					}
+				}
+			}
+		}
+	}
+
+	public void tranformAllBlockXToBlockY(EnumWord enumWordX, EnumWord enumWordY) {
+		for (int i = 0; i < this.grid.length; i++) {
+			for (int j = 0; j < this.grid[0].length; j++) {
+				for (int k = 0; k < this.grid[i][j].size(); k++) {
+					Block block = this.grid[i][j].getBlock(k);
+					if (block.getName() == enumWordX && block.getClass() == ElementBlock.class) {
+						this.grid[i][j].removeBlockAt(k);
+						this.grid[i][j].addBlock(new ElementBlock(enumWordY));
+					}
+				}
+			}
+		}
 	}
 }
