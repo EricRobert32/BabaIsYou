@@ -87,7 +87,7 @@ public class Controller {
 				playLevel(context, level);
 				return;
 			}
-			Event event = context.pollOrWaitEvent(10);
+			Event event = context.pollOrWaitEvent(100);
 			if (event == null) { // no event
 				continue;
 			}
