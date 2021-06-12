@@ -26,11 +26,10 @@ public class View {
 					if (grid[i][j].isEmpty()) {
 						block = null;
 					} else {
-						block = grid[i][j].getBlock(0);
-					}
-
-					if (block != null) {
-						block.getImage().draw(graphics, minY, minX, maxY, maxX);
+						for (int k = 0; k < grid[i][j].size(); k++) {
+							block = grid[i][j].getBlock(k);
+							block.getImage().draw(graphics, minY, minX, maxY, maxX);
+						}
 					}
 				}
 			}

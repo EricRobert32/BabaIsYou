@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -57,109 +58,162 @@ public class Model {
 	 * grid[line][column].removeBlock(bloc); }
 	 */
 
-	private String verifiedBlock(int line, int column, Block block) {
-		if (rules.containsKey(block.getName()) && !(block.getClass() == WordBlock.class)) {
+	private String verifiedBlock(Block block) {
+		if (rules.containsKey(block.getName()) && block.getClass() == ElementBlock.class) {
 			var rule = rules.get(block.getName());
 			if (rule.contains(EnumWord.STOP)) {
 				return "STOP";
 			} else if (rule.contains(EnumWord.PUSH)) {
 				return "PUSH";
+			} else if (rule.contains(EnumWord.YOU)) {
+				return "YOU";
 			} else if (rule.contains(EnumWord.DEFEAT)) {
-				return "DEFEAT"; /* LE BLOCK QUI ARRIVE MEURT */
-			} else if (rule.contains(EnumWord.SINK)) {
-				return "SINK"; /* LE BLOCK QUI ARRIVE MEURT */
-			} else if (rule.contains(EnumWord.MELT)) {
-				return "MELT"; /* EST DETRUIT SI LE BLOCK QUI ARRIVE EST HOT */
-			} else if (rule.contains(EnumWord.WIN)) {
-				return "WIN"; /* LE BLOCK QUI ARRIVE GAGNE */
-			} else if (rule.contains(EnumWord.HOT)) {
-				return "HOT"; /* DETRUIT LE BLOCK QUI ARRIVE SI CE BLOCK EST MELT */
+				return "DEFEAT";
 			}
 		}
-		return "PASS";
+		return "OTHER";
+
 	}
 
-	
 	public boolean moveBlock(int line, int column, Block block, EnumDirection dir) {
-		
+		System.out.println("Calling on grid[" + line + "][" + column + "] :");
 		if (line < 0 || column < 0 || line >= grid.length || column >= grid[0].length) {
+			System.out.println("     Out of grid !!!!!");
 			return false;
+		} else if (grid[line][column].isEmpty()) {
+			System.out.println("     Nothing here, you can go here !!!!!");
+			return true;
 		}
-		
-		var flagPass = true;
-		for (int i = 0; i < grid[line][column].size();i++) {
-			var verif = verifiedBlock(line, column, grid[line][column].getBlock(i));
-			if (verif == "PUSH") {
-				flagPass = false;
-			}
-			if (verif == "STOP") {
-				return false;
-			}
-			
-		}
-		
+		int lineNext;
+		int columnNext;
 		switch (dir) {
-		case RIGHT:
-			
-			if(moveBlock(line, column+1, block, dir) || flagPass) {
-				for (int i = 0; i < grid[line][column].size();i++) {
-					var verif = verifiedBlock(line, column, grid[line][column].getBlock(i));
-					if (verif == "PUSH" || verif == "YOU") {
-						System.out.println(i);
-						grid[line][column+1].addBlock(grid[line][column].getBlock(i));
-						grid[line][column].removeBlock(grid[line][column].getBlock(i));
-						}
+		case RIGHT: {
+			System.out.println("RIGHT");
+			lineNext = line;
+			columnNext = column + 1;
+			if (moveBlock(lineNext, columnNext, block, dir)) {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP") {
+						return false;
 					}
-				return true;
 				}
-			break;
-			
-			
-		case LEFT:
-			if(moveBlock(line, column-1, block, dir) || flagPass) {
-				for (int i = 0; i < grid[line][column].size();i++) {
-					var verif = verifiedBlock(line, column, grid[line][column].getBlock(i));
-					if (verif == "PUSH" || verif == "YOU") {
-						grid[line][column-1].addBlock(grid[line][column].getBlock(i));
-						grid[line][column].removeBlock(grid[line][column].getBlock(i));
-
-						}
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					System.out.println(verifiedBlock(actualBlock));
+					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
+							|| actualBlock.getClass() == WordBlock.class) {
+						grid[lineNext][columnNext].addBlock(actualBlock);
+						grid[line][column].removeBlockAt(i);
 					}
-				return true;
 				}
-
-			
-		case TOP:
-			if(moveBlock(line-1, column, block, dir) || flagPass) {
-				for (int i = 0; i < grid[line][column].size();i++) {
-					var verif = verifiedBlock(line, column, grid[line][column].getBlock(i));
-					if (verif == "PUSH" || verif == "YOU") {
-						grid[line-1][column].addBlock(grid[line][column].getBlock(i));
-						grid[line][column].removeBlock(grid[line][column].getBlock(i));
-
-						}
+				return true;
+			} else {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+						return false;
 					}
-				return true;
 				}
-
-		case BOTTOM:
-			if(moveBlock(line+1, column, block, dir) || flagPass) {
-				for (int i = 0; i < grid[line][column].size();i++) {
-					var verif = verifiedBlock(line, column, grid[line][column].getBlock(i));
-					if (verif == "PUSH" || verif == "YOU") {
-						grid[line+1][column].addBlock(grid[line][column].getBlock(i));
-						grid[line][column].removeBlock(grid[line][column].getBlock(i));
-
-						}
-					}
 				return true;
-				}
-			break;
-
-		default:
-			throw new IllegalArgumentException("Wrong direction : " + dir);
+			}
 		}
-		return false;
+		case LEFT: {
+			System.out.println("LEFT");
+			lineNext = line;
+			columnNext = column - 1;
+			if (moveBlock(lineNext, columnNext, block, dir)) {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP") {
+						return false;
+					}
+				}
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					System.out.println(verifiedBlock(actualBlock));
+					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
+							|| actualBlock.getClass() == WordBlock.class) {
+						grid[lineNext][columnNext].addBlock(actualBlock);
+						grid[line][column].removeBlockAt(i);
+					}
+				}
+				return true;
+			} else {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		case TOP: {
+			System.out.println("TOP");
+			lineNext = line - 1;
+			columnNext = column;
+			if (moveBlock(lineNext, columnNext, block, dir)) {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP") {
+						return false;
+					}
+				}
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					System.out.println(verifiedBlock(actualBlock));
+					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
+							|| actualBlock.getClass() == WordBlock.class) {
+						grid[lineNext][columnNext].addBlock(actualBlock);
+						grid[line][column].removeBlockAt(i);
+					}
+				}
+				return true;
+			} else {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		case BOTTOM: {
+			System.out.println("BOTTOM");
+			lineNext = line + 1;
+			columnNext = column;
+			if (moveBlock(lineNext, columnNext, block, dir)) {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP") {
+						return false;
+					}
+				}
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					System.out.println(verifiedBlock(actualBlock));
+					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
+							|| actualBlock.getClass() == WordBlock.class) {
+						grid[lineNext][columnNext].addBlock(actualBlock);
+						grid[line][column].removeBlockAt(i);
+					}
+				}
+				return true;
+			} else {
+				for (int i = 0; i < grid[line][column].size(); i++) {
+					Block actualBlock = grid[line][column].getBlock(i);
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + dir);
+		}
 	}
 
 	public void displayGrid() {
@@ -187,65 +241,71 @@ public class Model {
 
 		rules = fillHashMap();
 
-		System.out.println("\n***** GENERATE RULES *****\n");
+		/* System.out.println("\n***** GENERATE RULES *****\n"); */
 
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j].isEmpty()) {
 					continue;
 				}
-				Block block = grid[i][j].getBlock(0);
-				Block blockX1 = null;
-				Block blockX2 = null;
-				Block blockY1 = null;
-				Block blockY2 = null;
+				for (int k = 0; k < grid[i][j].size(); k++) {
+					Block block = grid[i][j].getBlock(k);
+					Block blockX1 = null;
+					Block blockX2 = null;
+					Block blockY1 = null;
+					Block blockY2 = null;
 
-				if (j < grid[0].length - 2) {
-					if (!(grid[i][j + 1].isEmpty()) && !(grid[i][j + 2].isEmpty())) {
-						blockX1 = grid[i][j + 1].getBlock(0);
-						blockX2 = grid[i][j + 2].getBlock(0);
+					if (j < grid[0].length - 2) {
+						if (!(grid[i][j + 1].isEmpty()) && !(grid[i][j + 2].isEmpty())) {
+							blockX1 = grid[i][j + 1].getBlock(0);
+							blockX2 = grid[i][j + 2].getBlock(0);
+						}
 					}
-				}
-				if (i < grid.length - 2) {
-					if (!(grid[i + 1][j].isEmpty()) && !(grid[i + 2][j].isEmpty())) {
-						blockY1 = grid[i + 1][j].getBlock(0);
-						blockY2 = grid[i + 2][j].getBlock(0);
-					}
-				}
-
-				if (block != null) {
-					/* Vérifier phrase sur la ligne */
-					if (blockX1 != null && blockX2 != null) {
-						if (block.getClass() == WordBlock.class && blockX1.getClass() == WordBlock.class
-								&& blockX2.getClass() == WordBlock.class) {
-							if (((WordBlock) block).getCategory() == EnumCategory.NOUN
-									&& ((WordBlock) blockX1).getCategory() == EnumCategory.OPERATOR
-									&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN
-											|| ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
-								System.out.println("Les mots " + block.getName() + " " + blockX1.getName() + " "
-										+ blockX2.getName() + " forment une phrase");
-
-								Set<EnumWord> set = rules.get(block.getName());
-								set.add(blockX2.getName());
-								rules.put(block.getName(), set);
-							}
+					if (i < grid.length - 2) {
+						if (!(grid[i + 1][j].isEmpty()) && !(grid[i + 2][j].isEmpty())) {
+							blockY1 = grid[i + 1][j].getBlock(0);
+							blockY2 = grid[i + 2][j].getBlock(0);
 						}
 					}
 
-					/* Vérifier phrase sur la colonne */
-					if (blockY1 != null && blockY2 != null) {
-						if (block.getClass() == WordBlock.class && blockY1.getClass() == WordBlock.class
-								&& blockY2.getClass() == WordBlock.class) {
-							if (((WordBlock) block).getCategory() == EnumCategory.NOUN
-									&& ((WordBlock) blockY1).getCategory() == EnumCategory.OPERATOR
-									&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN
-											|| ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
-								System.out.println("Les mots " + block.getName() + " " + blockY1.getName() + " "
-										+ blockY2.getName() + " forment une phrase");
+					if (block != null) {
+						/* Vérifier phrase sur la ligne */
+						if (blockX1 != null && blockX2 != null) {
+							if (block.getClass() == WordBlock.class && blockX1.getClass() == WordBlock.class
+									&& blockX2.getClass() == WordBlock.class) {
+								if (((WordBlock) block).getCategory() == EnumCategory.NOUN
+										&& ((WordBlock) blockX1).getCategory() == EnumCategory.OPERATOR
+										&& (((WordBlock) blockX2).getCategory() == EnumCategory.NOUN
+												|| ((WordBlock) blockX2).getCategory() == EnumCategory.ATTRIBUTE)) {
+									/*
+									 * System.out.println("Les mots " + block.getName() + " " + blockX1.getName() +
+									 * " " + blockX2.getName() + " forment une phrase");
+									 */
 
-								Set<EnumWord> set = rules.get(block.getName());
-								set.add(blockY2.getName());
-								rules.put(block.getName(), set);
+									Set<EnumWord> set = rules.get(block.getName());
+									set.add(blockX2.getName());
+									rules.put(block.getName(), set);
+								}
+							}
+						}
+
+						/* Vérifier phrase sur la colonne */
+						if (blockY1 != null && blockY2 != null) {
+							if (block.getClass() == WordBlock.class && blockY1.getClass() == WordBlock.class
+									&& blockY2.getClass() == WordBlock.class) {
+								if (((WordBlock) block).getCategory() == EnumCategory.NOUN
+										&& ((WordBlock) blockY1).getCategory() == EnumCategory.OPERATOR
+										&& (((WordBlock) blockY2).getCategory() == EnumCategory.NOUN
+												|| ((WordBlock) blockY2).getCategory() == EnumCategory.ATTRIBUTE)) {
+									/*
+									 * System.out.println("Les mots " + block.getName() + " " + blockY1.getName() +
+									 * " " + blockY2.getName() + " forment une phrase");
+									 */
+
+									Set<EnumWord> set = rules.get(block.getName());
+									set.add(blockY2.getName());
+									rules.put(block.getName(), set);
+								}
 							}
 						}
 					}
@@ -253,7 +313,7 @@ public class Model {
 			}
 		}
 
-		System.out.println("\n*** FIN GENERATE RULES ***\n");
+		/* System.out.println("\n*** FIN GENERATE RULES ***\n"); */
 
 		return rules;
 	}

@@ -25,6 +25,14 @@ public class Cell {
 		}*/
 	}
 	
+	public boolean removeBlockAt(int i) {
+		if (i < this.element.size()) {
+			element.remove(i);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean containBlock(Block block) {
 		return element.contains(block);
 	}
