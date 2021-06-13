@@ -1,12 +1,14 @@
 package model;
 
+import java.util.Objects;
+
 import model.elementList.EnumWord;
 import view.Sprite;
 
 /**
  * Class that represent a element block
- * @author Éric Robert
- * @author Romain Barbé
+ * @author ROBERT Eric
+ * @author BARB� Romain
  * @version 1
  */
 abstract sealed class AbstractBlock implements Block permits WordBlock, ElementBlock{
@@ -15,7 +17,7 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	
 	/**
 	 * Block constructor
-	 * @param name
+	 * @param name Element of the block
 	 */
 	public AbstractBlock(EnumWord name) {
 		this.name = name;
@@ -29,33 +31,45 @@ abstract sealed class AbstractBlock implements Block permits WordBlock, ElementB
 	}
 	
 	/**
-	 * Send back the name of the block
-	 * @return the name
+	 * Return the element of the block
+	 * @return element of the block
 	 */
 	public EnumWord getName() {
 		return this.name;
 	}
 	
+	/**
+	 * Return the image attached to the element
+	 * @return Sprite of the element
+	 */
 	public Sprite getImage() {
 		return this.image;
 	}
+	
 	
 	@Override
 	public String toString() {
 		return this.name.toString();
 	}
 	
-	/*@Override
+	/**
+	 * Compares the specified object with this AbstractBlock for equality
+	 * @return True if they are equals, 0 otherwise
+	 */
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AbstractBlock that = (AbstractBlock) o;
-		return x == that.x && y == that.y && name == that.name;
+		return name.equals(that.name) && image.equals(that.image);
 	}
 
-
+	/**
+	 * Returns the hash code value for this AbstackBlock
+	 * @return hash of the specified object
+	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, x, y);
-	}*/
+		return Objects.hash(name)+ image.hashCode();
+	}
 }

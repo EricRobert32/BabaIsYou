@@ -1,9 +1,9 @@
 package model.elementList;
 
 /**
- * Enum for the words
- * @author Éric Robert
- * @author Romain Barbé
+ * Enumeration of all type of block possible
+ * @author ROBERT Eric
+ * @author BARB� Romain
  * @version 1
  */
 public enum EnumWord  {
@@ -13,13 +13,4 @@ public enum EnumWord  {
 
 	YOU, WIN, STOP, PUSH, MELT, HOT, DEFEAT, SINK;
 
-	/*public boolean wordForElement(EnumWord p) {
-		switch (p) {
-		case IS: {
-			return false;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + p);
-		}
-	}*/
 }

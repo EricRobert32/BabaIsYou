@@ -14,7 +14,20 @@ import model.ElementBlock;
 import model.elementList.EnumCategory;
 import model.elementList.EnumWord;
 
+/**
+ * Class who deal with all out of the game events
+ * @author BARBÉ Romain
+ * @author ROBERT Eric
+ *
+ */
 public class InputData {
+	
+	/**
+	 * Read a file and return a 2D array of Cell
+	 * @param file file to read
+	 * @return 2D array of the grid
+	 * @throws IOException if the file is not found
+	 */
 	public static Cell[][] readFile(String file) throws IOException {
 		System.out.println("\n******* INPUT DATA *******\n");
 		Path levelPath = Paths.get("resource", file);
@@ -56,6 +69,11 @@ public class InputData {
 		};
 	}
 	
+	/**
+	 * Convert a string to a word block
+	 * @param s string to convert
+	 * @return the block affiliate with the string
+	 */
 	private static Block stringToWordBlock(String s) {
 		return switch (s) {
 			case "W-BABA" -> new WordBlock(EnumWord.BABA, EnumCategory.NOUN);
@@ -78,6 +96,11 @@ public class InputData {
 		};
 	}
 	
+	/**
+	 * Convert a string to an element block
+	 * @param s string to convert
+	 * @return the block affiliate with the string
+	 */
 	private static Block stringToElementBlock(String s) {
 		return switch (s) {
 			case "E-BABA" -> new ElementBlock(EnumWord.BABA);

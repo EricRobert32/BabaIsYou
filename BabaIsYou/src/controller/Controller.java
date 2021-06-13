@@ -25,7 +25,19 @@ import model.elementList.EnumWord;
 import view.Sprite;
 import view.View;
 
+/**
+ * A class which is assembling the game data, the game view and the user's input to run the game
+ * @author ROBERT Eric
+ * @author BARBE Romain
+ * @version 1
+ */
 public class Controller {
+	
+	
+	/**
+	 * Main method,run the each level.
+	 * @param args nothing for now
+	 */
 	public static void main(String[] args) {
 		Application.run(Color.BLACK, context -> {
 			String level0 = "level0.txt";
@@ -55,7 +67,12 @@ public class Controller {
 			context.exit(0);
 		});
 	}
-
+	
+	/**
+	 * Run a level of the main method 
+	 * @param context //
+	 * @param level Level to run
+	 */
 	public static void playLevel(ApplicationContext context, String level) {
 		Model model = new Model(level);
 		Cell[][] grid = model.getGrid();
