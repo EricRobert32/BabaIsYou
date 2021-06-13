@@ -461,7 +461,7 @@ public class Model {
 	}
 	
 	/**
-	 * 
+	 * Destroy a block if it is on a block bind by sink rule
 	 */
 	public void destroyBlockXAndBlockSinkIsInTheSameCell() {
 		boolean cellHasOther, cellHasSink;
@@ -488,7 +488,7 @@ public class Model {
 	}
 	
 	/**
-	 * 
+	 * Transform block according to rule
 	 */
 	public void transformABlockIfARuleSaidSo() {
 		for (var rule : this.rules.entrySet()) {

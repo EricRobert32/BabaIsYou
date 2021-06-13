@@ -7,7 +7,21 @@ import fr.umlv.zen5.ApplicationContext;
 import model.Block;
 import model.Cell;
 
+/**
+ * Class which use for grapghics event
+ * @author BARBÉ Romain
+ * @author ROBERT Eric
+ *
+ */
 public class View {
+	
+	/**
+	 * Draw the game's grid
+	 * @param context ??
+	 * @param sizeGridX amount of line of the grid
+	 * @param sizeGridY amount of columnof the grid
+	 * @param grid game's grid
+	 */
 	public static void draw(ApplicationContext context, int sizeGridX, int sizeGridY, Cell[][] grid) {
 		float width = context.getScreenInfo().getWidth();
 		float height = context.getScreenInfo().getHeight();
