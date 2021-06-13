@@ -2,10 +2,21 @@ package model.elementList;
 
 /**
  * Enumeration off all the category of the words
- * @author Éric Robert
- * @author Romain Barbé
+ * @author BARBE Romain
+ * @author ROBERT Eric
  * @version 1
  */
 public enum EnumCategory {
-	NOUN, OPERATOR, ATTRIBUTE
+	/**
+     * Noun category
+     */
+	NOUN,
+	/**
+     * Operator category
+     */
+	OPERATOR,
+	/**
+     * Attribute category
+     */
+	ATTRIBUTE
 }

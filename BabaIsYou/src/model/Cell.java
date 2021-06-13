@@ -3,16 +3,15 @@ package model;
 import java.util.ArrayList;
 
 /**
- * A cell of the game grid containing multiple element
+ * A cell of the grid containing multiple element
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author BARBÉ Romain
- *
  */
 public class Cell {
 	private final ArrayList<Block> element;
 	
 	/**
-	 * Constructor for Cell
+	 * Cell constructor
 	 */
 	public Cell() {
 		this.element = new ArrayList<>();
@@ -20,7 +19,7 @@ public class Cell {
 	
 	/**
 	 * Add a block to the cell
-	 * @param block block to add
+	 * @param block Block to add
 	 */
 	public void addBlock(Block block) {
 		element.add(block);
@@ -28,25 +27,26 @@ public class Cell {
 	
 	/**
 	 * Remove a block from the cell
-	 * @param i Index of the block to remove
+	 * @param index Index of the block to remove
+	 * @return true if the block is deleted, false otherwise
 	 */	
-	public boolean removeBlockAt(int i) {
-		if (i < this.element.size()) {
-			element.remove(i);
+	public boolean removeBlockAt(int index) {
+		if (index < this.element.size()) {
+			element.remove(index);
 			return true;
 		}
 		return false;
 	}
 	
 	/**
-	 * Look if a block is inside this cell
-	 * @param block block to look at
+	 * Verify if a block is inside this cell
+	 * @param block Block to look at
 	 * @return true if it's in the cell, false otherwise
 	 */
 	public boolean containBlock(Block block) {
 		return element.contains(block);
 	}
-	
+
 	/**
 	 * Return the amount of element in this cell
 	 * @return the amount of element
@@ -56,18 +56,17 @@ public class Cell {
     }
 	
     /**
-     * Returns a block at the specified position 
-     * @param index position
+     * Return a block at the specified position 
+     * @param index Position
      * @return the element at the specified position in this cell
      */
 	public Block getBlock(int index) {
 		return element.get(index);
 	}
-	
-	
+
 	/**
 	 * Returns a string representation of this cell
-	 * @return a string representing the cell
+	 * @return a string representing of this cell
 	 */
     @Override
     public String toString() {
@@ -77,10 +76,10 @@ public class Cell {
             return element.toString();
         }
     }
-    
+
     /**
      * Look if the cell is empty
-     * @return True if the cell is empty, False otherwise
+     * @return true if the cell is empty, false otherwise
      */
     public boolean isEmpty(){
         return element.isEmpty();

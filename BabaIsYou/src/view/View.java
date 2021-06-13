@@ -8,19 +8,18 @@ import model.Block;
 import model.Cell;
 
 /**
- * Class which use for grapghics event
- * @author BARBÉ Romain
+ * Class used to render our game
+ * @author BARBE Romain
  * @author ROBERT Eric
- *
  */
 public class View {
 	
 	/**
 	 * Draw the game's grid
-	 * @param context ??
-	 * @param sizeGridX amount of line of the grid
-	 * @param sizeGridY amount of columnof the grid
-	 * @param grid game's grid
+	 * @param context The ApplicationContext in which the game will be printed
+	 * @param sizeGridX Number of lines of the grid
+	 * @param sizeGridY Number of column of the grid
+	 * @param grid Game's grid
 	 */
 	public static void draw(ApplicationContext context, int sizeGridX, int sizeGridY, Cell[][] grid) {
 		float width = context.getScreenInfo().getWidth();

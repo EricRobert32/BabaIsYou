@@ -11,63 +11,65 @@ import model.elementList.EnumCategory;
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
 import model.input.InputData;
+
 /**
- * @author BARBÉ Romain
- * @author ROBERT Eric
  * The class who represent the game data
- * 
+ * @author BARBE Romain
+ * @author ROBERT Eric
  */
 public class Model {
 	private Cell[][] grid;
 	private HashMap<EnumWord, Set<EnumWord>> rules;
-	
+
 	/**
 	 * Model constructor
-	 * @param file Path of the file of the level
+	 * @param file String (name) of the level
+	 * @param cheatRules A map in which some cheat rules are set
 	 */
-	public Model(String file) {
+	public Model(String file, HashMap<EnumWord, Set<EnumWord>> cheatRules) {
 		try {
 			this.grid = InputData.readFile(file);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("File " + file + " do not exist");
 		}
-		this.rules = this.generateRules(this.grid);
+		this.rules = this.generateRules(this.grid, cheatRules);
 	}
-	
+
 	/**
 	 * Return the amount of line of the game's grid
-	 * @return Amount of line in the grid
+	 * @return amount of line in the grid
 	 */
 	public int getNbLine() {
 		return grid.length;
 	}
+
 	/**
 	 * Return the amount of column of the game's grid
-	 * @return Amount of column in the grid
+	 * @return amount of column in the grid
 	 */
 	public int getNbColumn() {
 		return grid[0].length;
 	}
-	
+
 	/**
 	 * Return the actual list of rule
-	 * @return An HashMap of rule
+	 * @return an HashMap of rule
 	 */
 	public HashMap<EnumWord, Set<EnumWord>> getRules() {
 		return this.rules;
 	}
-	
-	/**
-	 * Update the actual rule of the grid in our ArrayList 
-	 */
-	public void refreshRules() {
-		this.rules = this.generateRules(this.grid);
-	}
 
+	/**
+	 * Update the actual rule of the grid in our ArrayList
+	 * @param cheatRules A map in which some cheat rules are set
+	 */
+	public void refreshRules(HashMap<EnumWord, Set<EnumWord>> cheatRules) {
+		this.rules = this.generateRules(this.grid, cheatRules);
+	}
 
 	/**
 	 * Verified if the block is bind to a rule
-	 * @param block block to check
+	 * @param block Block to check
 	 * @return a string use to define the block state
 	 */
 	private String verifiedBlock(Block block) {
@@ -85,12 +87,13 @@ public class Model {
 		}
 		return "OTHER";
 	}
+
 	/**
-	 * Move the block toa direction 
-	 * @param line line of the block
-	 * @param column column of the block
-	 * @param block block to move
-	 * @param dir direction of the mouvement
+	 * Move the block to a direction (if possible)
+	 * @param line Line coordinate of the block
+	 * @param column Column coordinate of the block
+	 * @param block Block to move
+	 * @param dir Direction of the movement
 	 * @return true if the move is successful, false otherwise
 	 */
 	public boolean moveBlock(int line, int column, Block block, EnumDirection dir) {
@@ -114,7 +117,6 @@ public class Model {
 				}
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					System.out.println(verifiedBlock(actualBlock));
 					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
 							|| actualBlock.getClass() == WordBlock.class) {
 						grid[lineNext][columnNext].addBlock(actualBlock);
@@ -125,7 +127,7 @@ public class Model {
 			} else {
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" ||  verifiedBlock(actualBlock) == "YOU" || actualBlock.getClass() == WordBlock.class) {
 						return false;
 					}
 				}
@@ -144,7 +146,6 @@ public class Model {
 				}
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					System.out.println(verifiedBlock(actualBlock));
 					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
 							|| actualBlock.getClass() == WordBlock.class) {
 						grid[lineNext][columnNext].addBlock(actualBlock);
@@ -155,7 +156,7 @@ public class Model {
 			} else {
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" ||  verifiedBlock(actualBlock) == "YOU" || actualBlock.getClass() == WordBlock.class) {
 						return false;
 					}
 				}
@@ -174,7 +175,6 @@ public class Model {
 				}
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					System.out.println(verifiedBlock(actualBlock));
 					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
 							|| actualBlock.getClass() == WordBlock.class) {
 						grid[lineNext][columnNext].addBlock(actualBlock);
@@ -185,7 +185,7 @@ public class Model {
 			} else {
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" ||  verifiedBlock(actualBlock) == "YOU" || actualBlock.getClass() == WordBlock.class) {
 						return false;
 					}
 				}
@@ -204,7 +204,6 @@ public class Model {
 				}
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					System.out.println(verifiedBlock(actualBlock));
 					if (verifiedBlock(actualBlock) == "PUSH" || verifiedBlock(actualBlock) == "YOU"
 							|| actualBlock.getClass() == WordBlock.class) {
 						grid[lineNext][columnNext].addBlock(actualBlock);
@@ -215,7 +214,7 @@ public class Model {
 			} else {
 				for (int i = 0; i < grid[line][column].size(); i++) {
 					Block actualBlock = grid[line][column].getBlock(i);
-					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" || actualBlock.getClass() == WordBlock.class) {
+					if (verifiedBlock(actualBlock) == "STOP" || verifiedBlock(actualBlock) == "PUSH" ||  verifiedBlock(actualBlock) == "YOU" || actualBlock.getClass() == WordBlock.class) {
 						return false;
 					}
 				}
@@ -226,9 +225,9 @@ public class Model {
 			throw new IllegalArgumentException("Unexpected value: " + dir);
 		}
 	}
-	
+
 	/**
-	 * Display the grid on terminal
+	 * Display the grid on terminal (only use in debug)
 	 */
 	public void displayGrid() {
 		System.out.println("\n****** DISPLAY GRID ******\n");
@@ -245,22 +244,24 @@ public class Model {
 		}
 		System.out.println("\n**** FIN DISPLAY GRID ****\n");
 	}
+
 	/**
 	 * Return the game's grid
-	 * @return the game gris (2D array)
+	 * @return the game grid (2D array)
 	 */
 	public Cell[][] getGrid() {
 		return grid;
 	}
-	
+
 	/**
-	 * Generate Rule from the grid and return rule
-	 * @param grid grid to check
-	 * @return a new Hashmap of rule
+	 * Generate rules from the grid and return those rules
+	 * @param grid Grid to check
+	 * @param cheatRules A map in which some cheat rules are set
+	 * @return a new HashMap of rules
 	 */
-	public HashMap<EnumWord, Set<EnumWord>> generateRules(Cell[][] grid) {
+	public HashMap<EnumWord, Set<EnumWord>> generateRules(Cell[][] grid, HashMap<EnumWord, Set<EnumWord>> cheatRules) {
 		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
-		rules = fillHashMap();
+		rules = fillHashMap(cheatRules);
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j].isEmpty()) {
@@ -319,28 +320,31 @@ public class Model {
 		}
 		return rules;
 	}
-	
-	/**
-	 * Fill the rule cpntainer of rule
-	 * @return Rule
-	 */
-	private HashMap<EnumWord, Set<EnumWord>> fillHashMap() {
-		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
 
-		rules.put(EnumWord.BABA, new HashSet<EnumWord>());
-		rules.put(EnumWord.FLAG, new HashSet<EnumWord>());
-		rules.put(EnumWord.WALL, new HashSet<EnumWord>());
-		rules.put(EnumWord.WATER, new HashSet<EnumWord>());
-		rules.put(EnumWord.SKULL, new HashSet<EnumWord>());
-		rules.put(EnumWord.LAVA, new HashSet<EnumWord>());
-		rules.put(EnumWord.ROCK, new HashSet<EnumWord>());
+	/**
+	 * Fill the rule HashMap of rules with keys (and the content of cheatRules)
+	 * @param cheatRules A map in which some cheat rules are set
+	 * @return a new HashMap of rules
+	 */
+	private HashMap<EnumWord, Set<EnumWord>> fillHashMap(HashMap<EnumWord, Set<EnumWord>> cheatRules) {
+		HashMap<EnumWord, Set<EnumWord>> rules = new HashMap<>();
+		
+		cheatRules.keySet().forEach(word -> rules.put(word, new HashSet<>(cheatRules.get(word))));
+
+		rules.putIfAbsent(EnumWord.BABA, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.FLAG, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.WALL, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.WATER, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.SKULL, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.LAVA, new HashSet<EnumWord>());
+		rules.putIfAbsent(EnumWord.ROCK, new HashSet<EnumWord>());
 
 		return rules;
 	}
 	
 	/**
-	 * Update the rule you on block
-	 * @return ?
+	 * Verify if the player have entities to move
+	 * @return true if no more entities to move, false if at least one
 	 */
 	public boolean noMoreXIsYou() {
 		Set<EnumWord> setBlockOfYou = new HashSet<EnumWord>();
@@ -348,7 +352,6 @@ public class Model {
 			if (!(rule.getValue().isEmpty())) {
 				for (var value : rule.getValue()) {
 					if (value == EnumWord.YOU) {
-						/* return false; *//* VÃ©rifier si un "value" au moins est dans le jeu */
 						setBlockOfYou.add(rule.getKey());
 					}
 				}
@@ -368,10 +371,10 @@ public class Model {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Check on the rule if the block is at the same time you and win
-	 * @return true if it is, false otherwise
+	 * @return true if at least a block is you and win, false otherwise
 	 */
 	public boolean blockIsYouAndWin() {
 		boolean blockIsYou, blockIsWin;
@@ -394,10 +397,9 @@ public class Model {
 		return false;
 	}
 
-
 	/**
-	 * Verified if the game is win
-	 * @return true is the game is win, false otherwise
+	 * Verify if a block you is in the same cell as a block win
+	 * @return true if yes, false otherwise
 	 */
 	public boolean blockYouIsOnBlockWin() {
 		boolean cellHasYou, cellHasWin;
@@ -422,11 +424,11 @@ public class Model {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Destroy a block who has been pushed on another, according ti rule
-	 * @param enumWordX The block which as been pushed
-	 * @param enumWordY The other one
+	 * Destroy a block X if it is in the same cell as a block Y
+	 * @param enumWordX X property
+	 * @param enumWordY Y property
 	 */
 	public void destroyBlockXIfIsOnBlockY(EnumWord enumWordX, EnumWord enumWordY) {
 		boolean cellHasX, cellHasY;
@@ -459,9 +461,9 @@ public class Model {
 			}
 		}
 	}
-	
+
 	/**
-	 * Destroy a block if it is on a block bind by sink rule
+	 * Destroy a block if it is on a block bind by sink rule and destroy the block sink
 	 */
 	public void destroyBlockXAndBlockSinkIsInTheSameCell() {
 		boolean cellHasOther, cellHasSink;
@@ -486,9 +488,9 @@ public class Model {
 			}
 		}
 	}
-	
+
 	/**
-	 * Transform block according to rule
+	 * Transform a block according to rules (ex : baba is rock)
 	 */
 	public void transformABlockIfARuleSaidSo() {
 		for (var rule : this.rules.entrySet()) {
@@ -529,11 +531,11 @@ public class Model {
 			}
 		}
 	}
-	
+
 	/**
-	 * Transform all block to another
+	 * Transform all X block to Y block
 	 * @param enumWordX Block to transform
-	 * @param enumWordY Block which will be copied
+	 * @param enumWordY Block that will take place of X block
 	 */
 	public void tranformAllBlockXToBlockY(EnumWord enumWordX, EnumWord enumWordY) {
 		for (int i = 0; i < this.grid.length; i++) {

@@ -2,12 +2,8 @@ package controller;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import fr.umlv.zen5.Application;
@@ -22,23 +18,30 @@ import model.ElementBlock;
 import model.Model;
 import model.elementList.EnumDirection;
 import model.elementList.EnumWord;
-import view.Sprite;
 import view.View;
 
 /**
  * A class which is assembling the game data, the game view and the user's input to run the game
- * @author ROBERT Eric
  * @author BARBE Romain
+ * @author ROBERT Eric
  * @version 1
  */
 public class Controller {
 	
-	
 	/**
-	 * Main method,run the each level.
-	 * @param args nothing for now
+	 * Main method, used to run each level.
+	 * @param args The arguments the user give at the execution (for some cheat rules)
 	 */
 	public static void main(String[] args) {
+		HashMap<EnumWord, Set<EnumWord>> cheatRules = new HashMap<>();
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("--execute")) {
+				Set<EnumWord> set = new HashSet<>();
+				set.add(EnumWord.valueOf(args[i + 3].toUpperCase()));
+				cheatRules.put(EnumWord.valueOf(args[i + 1].toUpperCase()), set);
+			}
+		}
+		
 		Application.run(Color.BLACK, context -> {
 			String level0 = "level0.txt";
 			String level1 = "level1.txt";
@@ -49,57 +52,39 @@ public class Controller {
 			String level6 = "level6.txt";
 
 			System.out.println("Level 0");
-			playLevel(context, level0);
+			playLevel(context, level0, cheatRules);
 			System.out.println("Level 1");
-			playLevel(context, level1);
+			playLevel(context, level1, cheatRules);
 			System.out.println("Level 2");
-			playLevel(context, level2);
+			playLevel(context, level2, cheatRules);
 			System.out.println("Level 3");
-			playLevel(context, level3);
+			playLevel(context, level3, cheatRules);
 			System.out.println("Level 4");
-			playLevel(context, level4);
+			playLevel(context, level4, cheatRules);
 			System.out.println("Level 5");
-			playLevel(context, level5);
+			playLevel(context, level5, cheatRules);
 			System.out.println("Level 6");
-			playLevel(context, level6);
+			playLevel(context, level6, cheatRules);
 
 			System.out.println("End of the game !");
 			context.exit(0);
 		});
 	}
-	
-	/**
-	 * Run a level of the main method 
-	 * @param context //
-	 * @param level Level to run
-	 */
-	public static void playLevel(ApplicationContext context, String level) {
-		Model model = new Model(level);
-		Cell[][] grid = model.getGrid();
-		/*
-		 * grid[0][0].addBlock(new ElementBlock(EnumWord.SKULL));
-		 * grid[1][0].addBlock(new ElementBlock(EnumWord.WATER));
-		 * grid[2][0].addBlock(new ElementBlock(EnumWord.WATER));
-		 * grid[3][0].addBlock(new ElementBlock(EnumWord.LAVA));
-		 */
-		/* model.displayGrid(); */
 
-		/******** Test des rules ********/
-		System.out.println("\n***** TEST DES RULES *****\n");
+	/**
+	 * Play a level
+	 * @param context The ApplicationContext in which the game will be printed
+	 * @param level Actual level
+	 * @param cheatRules A map in which some cheat rules are set
+	 */
+	public static void playLevel(ApplicationContext context, String level, HashMap<EnumWord, Set<EnumWord>> cheatRules) {
+		Model model = new Model(level, cheatRules);
+		Cell[][] grid = model.getGrid();
 		HashMap<EnumWord, Set<EnumWord>> rules = model.getRules();
-		for (var rule : rules.entrySet()) {
-			if (!(rule.getValue().isEmpty())) {
-				for (var value : rule.getValue()) {
-					System.out.println(rule.getKey() + " IS " + value);
-				}
-			}
-		}
-		System.out.println("\n*** FIN TEST DES RULES ***\n");
-		/****** Fin test des rules ******/
 
 		int sizeGridX = model.getNbLine();
 		int sizeGridY = model.getNbColumn();
-		System.out.println("sizeX (nb lignes) = " + sizeGridX + " | sizeY (nb colonnes) = " + sizeGridY);
+		System.out.println("Nb lines = " + sizeGridX + " && nb columns = " + sizeGridY);
 
 		ScreenInfo screenInfo = context.getScreenInfo();
 		float width = screenInfo.getWidth();
@@ -111,7 +96,7 @@ public class Controller {
 			View.draw(context, sizeGridX, sizeGridY, model.getGrid());
 			rules = model.getRules();
 			Event event = context.pollOrWaitEvent(100);
-			if (event == null) { // no event
+			if (event == null) {
 				continue;
 			}
 			Action action = event.getAction();
@@ -121,7 +106,7 @@ public class Controller {
 				return;
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.R || model.noMoreXIsYou()) {
 				System.out.println("Restarting this level !");
-				playLevel(context, level);
+				playLevel(context, level, cheatRules);
 				return;
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.N || model.blockIsYouAndWin()
 					|| model.blockYouIsOnBlockWin()) {
@@ -130,8 +115,6 @@ public class Controller {
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.UP) {
 				ArrayList<Block> blocks = new ArrayList<Block>();
 				ArrayList<Integer[]> pos = new ArrayList<>();
-
-				System.out.println("Going up !");
 				for (int i = 0; i < grid.length; i++) {
 					for (int j = 0; j < grid[0].length; j++) {
 						if (grid[i][j].isEmpty()) {
@@ -143,10 +126,6 @@ public class Controller {
 								if (block.getClass() == ElementBlock.class) {
 									Set<EnumWord> set = rules.get(block.getName());
 									if (set.contains(EnumWord.YOU)) {
-										/*
-										 * System.out.println("MOVING ! elem block BABA from x = " + i + " & y = " + j +
-										 * " to coords x = " + (i - 1) + " & y = " + j);
-										 */
 										blocks.add(block);
 										Integer[] tmp = { i, j };
 										pos.add(tmp);
@@ -164,8 +143,6 @@ public class Controller {
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.DOWN) {
 				ArrayList<Block> blocks = new ArrayList<Block>();
 				ArrayList<Integer[]> pos = new ArrayList<>();
-
-				System.out.println("Going down !");
 				for (int i = 0; i < grid.length; i++) {
 					for (int j = 0; j < grid[0].length; j++) {
 						if (grid[i][j].isEmpty()) {
@@ -177,10 +154,6 @@ public class Controller {
 								if (block.getClass() == ElementBlock.class) {
 									Set<EnumWord> set = rules.get(block.getName());
 									if (set.contains(EnumWord.YOU)) {
-										/*
-										 * System.out.println("MOVING ! elem block BABA from x = " + i + " & y = " + j +
-										 * " to coords x = " + (i + 1) + " & y = " + j);
-										 */
 										blocks.add(block);
 										Integer[] tmp = { i, j };
 										pos.add(tmp);
@@ -198,8 +171,6 @@ public class Controller {
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.RIGHT) {
 				ArrayList<Block> blocks = new ArrayList<Block>();
 				ArrayList<Integer[]> pos = new ArrayList<>();
-
-				System.out.println("Going right !");
 				for (int i = 0; i < grid.length; i++) {
 					for (int j = 0; j < grid[0].length; j++) {
 						if (grid[i][j].isEmpty()) {
@@ -211,10 +182,6 @@ public class Controller {
 								if (block.getClass() == ElementBlock.class) {
 									Set<EnumWord> set = rules.get(block.getName());
 									if (set.contains(EnumWord.YOU)) {
-										/*
-										 * System.out.println("MOVING ! elem block BABA from x = " + i + " & y = " + j +
-										 * " to coords x = " + i + " & y = " + (j + 1));
-										 */
 										blocks.add(block);
 										Integer[] tmp = { i, j };
 										pos.add(tmp);
@@ -232,8 +199,6 @@ public class Controller {
 			} else if (action == Action.KEY_PRESSED && event.getKey() == KeyboardKey.LEFT) {
 				ArrayList<Block> blocks = new ArrayList<Block>();
 				ArrayList<Integer[]> pos = new ArrayList<>();
-
-				System.out.println("Going left !");
 				for (int i = 0; i < grid.length; i++) {
 					for (int j = 0; j < grid[0].length; j++) {
 						if (grid[i][j].isEmpty()) {
@@ -245,10 +210,6 @@ public class Controller {
 								if (block.getClass() == ElementBlock.class) {
 									Set<EnumWord> set = rules.get(block.getName());
 									if (set.contains(EnumWord.YOU)) {
-										/*
-										 * System.out.println("MOVING ! elem block BABA from x = " + i + " & y = " + j +
-										 * " to coords x = " + i + " & y = " + (j - 1));
-										 */
 										blocks.add(block);
 										Integer[] tmp = { i, j };
 										pos.add(tmp);
@@ -263,11 +224,20 @@ public class Controller {
 					model.moveBlock(pos.get(i)[0], pos.get(i)[1], blocks.get(i), EnumDirection.LEFT);
 				}
 			}
+			
+			System.out.println("/******** CHEAT RULES ********/");
+			for (var rule : cheatRules.entrySet()) {
+				if (!(rule.getValue().isEmpty())) {
+					for (var value : rule.getValue()) {
+						System.out.println("CHEAT : " + rule.getKey() + " IS " + value);
+					}
+				}
+			}
+			System.out.println("/****** FIN CHEAT RULES ******/");
 
-			model.refreshRules();
+			model.refreshRules(cheatRules);
 
-			/******** Test des rules ********/
-			/*System.out.println("\n***** TEST DES RULES *****\n");
+			System.out.println("/*********** RULES ***********/");
 			rules = model.getRules();
 			for (var rule : rules.entrySet()) {
 				if (!(rule.getValue().isEmpty())) {
@@ -276,8 +246,7 @@ public class Controller {
 					}
 				}
 			}
-			System.out.println("\n*** FIN TEST DES RULES ***\n");*/
-			/****** Fin test des rules ******/
+			System.out.println("/********* FIN RULES *********/");
 
 			model.destroyBlockXIfIsOnBlockY(EnumWord.YOU, EnumWord.DEFEAT);
 			model.destroyBlockXIfIsOnBlockY(EnumWord.MELT, EnumWord.HOT);

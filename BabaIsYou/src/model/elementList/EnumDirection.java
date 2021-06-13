@@ -1,11 +1,26 @@
 package model.elementList;
 
 /**
- * Enumeration for out 4 directions
+ * Enumeration for the 4 movement directions
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author ROMAINÉ Barbe
  * @version 1
  */
 public enum EnumDirection {
-	TOP, BOTTOM, RIGHT, LEFT
+	/**
+     * Top direction
+     */
+	TOP,
+	/**
+     * Bottom direction
+     */
+	BOTTOM,
+	/**
+     * Right direction
+     */
+	RIGHT,
+	/**
+     * Left direction
+     */
+	LEFT
 }

@@ -1,16 +1,74 @@
 package model.elementList;
 
 /**
- * Enumeration of all type of block possible
+ * Enumeration of all words for the blocks
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author BARBÉ Romain
  * @version 1
  */
 public enum EnumWord  {
-	BABA, FLAG, WALL, WATER, SKULL, LAVA, ROCK,
-
+	/**
+     * Baba word
+     */
+	BABA,
+	/**
+     * Flag word
+     */
+	FLAG,
+	/**
+     * Wall word
+     */
+	WALL,
+	/**
+     * Water word
+     */
+	WATER,
+	/**
+     * Skull word
+     */
+	SKULL,
+	/**
+     * Lava word
+     */
+	LAVA,
+	/**
+     * Rock word
+     */
+	ROCK,
+	/**
+     * Is word
+     */
 	IS,
-
-	YOU, WIN, STOP, PUSH, MELT, HOT, DEFEAT, SINK;
-
+	/**
+     * YOu word
+     */
+	YOU,
+	/**
+     * Win word
+     */
+	WIN,
+	/**
+     * Stop word
+     */
+	STOP,
+	/**
+     * Push word
+     */
+	PUSH,
+	/**
+     * Melt word
+     */
+	MELT,
+	/**
+     * Hot word
+     */
+	HOT,
+	/**
+     * Defeat word
+     */
+	DEFEAT,
+	/**
+     * Sink word
+     */
+	SINK;
 }

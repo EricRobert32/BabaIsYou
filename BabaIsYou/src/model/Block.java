@@ -5,8 +5,8 @@ import view.Sprite;
 
 /**
  * Interface that give methods for the blocks
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author BARBÉ Romain
  * @version 1
  */
 public sealed interface Block permits AbstractBlock{

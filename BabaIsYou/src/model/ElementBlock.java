@@ -4,14 +4,14 @@ import model.elementList.EnumWord;
 
 /**
  * Class that represent a element block
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author BARBÉ Romain
  * @version 1
  */
 public final class ElementBlock extends AbstractBlock {
 	/**
 	 * ElementBlock constructor
-	 * @param name
+	 * @param name Name of the block
 	 */
 	public ElementBlock(EnumWord name) {
 		super(name);

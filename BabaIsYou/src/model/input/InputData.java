@@ -15,27 +15,24 @@ import model.elementList.EnumCategory;
 import model.elementList.EnumWord;
 
 /**
- * Class who deal with all out of the game events
- * @author BARBÉ Romain
+ * Class who create the game grid
+ * @author BARBE Romain
  * @author ROBERT Eric
- *
  */
 public class InputData {
 	
 	/**
 	 * Read a file and return a 2D array of Cell
-	 * @param file file to read
+	 * @param file File to read
 	 * @return 2D array of the grid
 	 * @throws IOException if the file is not found
 	 */
 	public static Cell[][] readFile(String file) throws IOException {
-		System.out.println("\n******* INPUT DATA *******\n");
-		Path levelPath = Paths.get("resource", file);
-
+		Path levelPath = Paths.get("classes/" + file); /* ("ressource" + file) si tests en dev */
+		System.out.println("TEST" + levelPath.toAbsolutePath());
 		Scanner sc = new Scanner(Files.newBufferedReader(levelPath, StandardCharsets.UTF_8));
 		int height = Integer.parseInt(sc.next()), width = Integer.parseInt(sc.next());
 		sc.nextLine();
-		System.out.println("Height = " + height + " ; width = " + width);
 		Cell[][] grid = new Cell[height][width];
 		int i = 0, j = 0;
 		while (sc.hasNextLine()) {
@@ -44,8 +41,6 @@ public class InputData {
 			while (sc2.hasNext()) {
 				String s = sc2.next();
 				grid[i][j] = new Cell();
-				/*System.out.println(
-						"Calling with height = " + height + " ; width = " + width + " ; i = " + i + " ; j = " + j);*/
 				Block b = stringToBlock(s);
 				if (b != null) {
 					grid[i][j].addBlock(b);
@@ -56,11 +51,14 @@ public class InputData {
 			i++;
 		}
 		sc.close();
-
-		System.out.println("\n***** FIN INPUT DATA *****\n");
 		return grid;
 	}
 
+	/**
+	 * Call stringToWordBlock or stringToElementBlock depending of the string start
+	 * @param s String to convert
+	 * @return the new block created
+	 */
 	private static Block stringToBlock(String s) {
 		return switch (s.charAt(0)) {
 			case 'W' -> stringToWordBlock(s);
@@ -71,8 +69,8 @@ public class InputData {
 	
 	/**
 	 * Convert a string to a word block
-	 * @param s string to convert
-	 * @return the block affiliate with the string
+	 * @param s String to convert
+	 * @return the block affiliated with the string
 	 */
 	private static Block stringToWordBlock(String s) {
 		return switch (s) {
@@ -98,8 +96,8 @@ public class InputData {
 	
 	/**
 	 * Convert a string to an element block
-	 * @param s string to convert
-	 * @return the block affiliate with the string
+	 * @param s String to convert
+	 * @return the block affiliated with the string
 	 */
 	private static Block stringToElementBlock(String s) {
 		return switch (s) {

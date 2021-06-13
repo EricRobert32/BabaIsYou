@@ -5,8 +5,8 @@ import model.elementList.EnumWord;
 
 /**
  * Class that represent a word block
+ * @author BARBE Romain
  * @author ROBERT Eric
- * @author BARBÉ Romain
  * @version 1
  */
 public final class WordBlock extends AbstractBlock {
@@ -14,8 +14,8 @@ public final class WordBlock extends AbstractBlock {
 
 	/**
 	 * WordBlock constructor
-	 * @param name Name of the block / Element of the block
-	 * @param category category of the block
+	 * @param name Name of the block
+	 * @param category Category of the block
 	 */
 	public WordBlock(EnumWord name, EnumCategory category) {
 		super(name);

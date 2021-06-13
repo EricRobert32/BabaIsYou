@@ -10,18 +10,17 @@ import javax.imageio.ImageIO;
 import model.elementList.EnumWord;
 
 /**
- * Sprite of the block
- * @author BARBÉ Romain
+ * Sprite (image) of the block
+ * @author BARBE Romain
  * @author ROBERT Eric
- *
  */
 public class Sprite {
 	private BufferedImage image;
 	
 	/**
-	 * Constructor of Sprite
-	 * @param word element of the block
-	 * @param type Element (E) or Word(W) type
+	 * Sprite constructor
+	 * @param word Word of the block
+	 * @param type Element(E) or Word(W) type of the block
 	 */
 	public Sprite(EnumWord word, String type) {
 		try {
@@ -33,11 +32,11 @@ public class Sprite {
 	
 	/**
 	 * Draw a Sprite
-	 * @param graphics
-	 * @param minY 
-	 * @param minX
-	 * @param maxY
-	 * @param maxX
+	 * @param graphics Used to draw
+	 * @param minY Top-left coordinates in y
+	 * @param minX Top-left coordinates in x
+	 * @param maxY Size y
+	 * @param maxX size x
 	 */
 	public void draw(Graphics2D graphics, int minY, int minX, int maxY, int maxX) {
 		graphics.drawImage(this.image, minY, minX, maxY, maxX, null);
